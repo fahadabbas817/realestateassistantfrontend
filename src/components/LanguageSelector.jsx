@@ -20,7 +20,7 @@ export default function LanguageDropdown({ language, setLanguage }) {
 
   const languages = [
     { code: "en", lang: "English" },
-    { code: "ar", lang: "Arabic" },
+    { code: "ar", lang: "العربية" },
   ];
 
   return (

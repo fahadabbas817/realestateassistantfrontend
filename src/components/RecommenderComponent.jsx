@@ -38,7 +38,7 @@ const {showRecommendation,setShowRecommendation,latLongDetails} = useAppStore()
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: '100%', opacity: 0 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      className='h-screen w-[60vw] p-4  rounded-3xl rounded-r-none bg-slate-600 shadow-xl overflow-hidden flex flex-col'
+      className='h-screen w-[60vw] p-4  rounded-3xl border-cyan-400 border-2 rounded-r-none bg-slate-600 shadow-xl overflow-hidden flex flex-col'
     >
       
        <span className='flex items-center cursor-pointer w-fit' onClick={()=>{setShowRecommendation(!showRecommendation)}}>

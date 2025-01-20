@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import {
-//   GoogleMap,
-//   LoadScript,
-//   Marker,
-//   InfoWindow,
-//   DirectionsRenderer,
-// } from "@react-google-maps/api";
-import { Button } from "@/components/ui/button"; // ShadCN Button component
+
 import { Card, CardContent, CardFooter } from "@/components/ui/card"; // ShadCN Card components
 import {
   AdvancedMarker,
@@ -47,47 +40,79 @@ const MapContainer = () => {
   const {latLongDetails} = useAppStore()
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [directionsResponse, setDirectionsResponse] = useState(null);
-  const [mapCenter,setMapCenter] = useState({lat: 18.286109,
-    lng: 42.513347,})
+  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+  const [mapZoom, setMapZoom] = useState(14);
 
 
-  const defaultCenter = {
-    lat: 18.286109,
-    lng: 42.513347,
-  };
+let defaultCenter = { };
+let testCoordinates = [
+  {
+    "project_id": 1,
+    "Project URL": "https://sakani.sa/app/offplan-projects/1",
+    "project_name_eng": "Riyadh Skyline",
+    "project_latitude": 24.774265,
+    "project_longitude": 46.738586
+  },
+  {
+    "project_id": 2,
+    "Project URL": "https://sakani.sa/app/offplan-projects/2",
+    "project_name_eng": "Kingdom Tower View",
+    "project_latitude": 24.713552,
+    "project_longitude": 46.675296
+  },
+  {
+    "project_id": 3,
+    "Project URL": "https://sakani.sa/app/offplan-projects/3",
+    "project_name_eng": "Al Faisaliah Residences",
+    "project_latitude": 24.690247,
+    "project_longitude": 46.685400
+  },
+  {
+    "project_id": 4,
+    "Project URL": "https://sakani.sa/app/offplan-projects/4",
+    "project_name_eng": "Riyadh Green Oasis",
+    "project_latitude": 24.726658,
+    "project_longitude": 46.767417
+  },
+  {
+    "project_id": 5,
+    "Project URL": "https://sakani.sa/app/offplan-projects/5",
+    "project_name_eng": "Diplomatic Quarter Heights",
+    "project_latitude": 24.709371,
+    "project_longitude": 46.641861
+  },
+  {
+    "project_id": 6,
+    "Project URL": "https://sakani.sa/app/offplan-projects/6",
+    "project_name_eng": "Riyadh Downtown Living",
+    "project_latitude": 24.631900,
+    "project_longitude": 46.715000
+  },
+  {
+    "project_id": 7,
+    "Project URL": "https://sakani.sa/app/offplan-projects/7",
+    "project_name_eng": "North Riyadh Residences",
+    "project_latitude": 24.850000,
+    "project_longitude": 46.700000
+  },
+  {
+    "project_id": 8,
+    "Project URL": "https://sakani.sa/app/offplan-projects/8",
+    "project_name_eng": "Eastern Riyadh Villas",
+    "project_latitude": 24.710400,
+    "project_longitude": 46.810000
+  }
+]
 
 
-  useEffect(()=>{
-    setMapCenter({
-      lat: latLongDetails?.project_latitude,
-      lng: latLongDetails?.project_longitude,
-    })
-  },[latLongDetails])
-  // console.log(latLongDetails)
-  // Handle fetching directions
-  // const getDirections = async (destination) => {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       async (position) => {
-  //         const { latitude, longitude } = position.coords;
-
-  //         const directionsService = new window.google.maps.DirectionsService();
-  //         const result = await directionsService.route({
-  //           origin: { lat: latitude, lng: longitude },
-  //           destination,
-  //           travelMode: window.google.maps.TravelMode.DRIVING,
-  //         });
-
-  //         setDirectionsResponse(result);
-  //       },
-  //       () => {
-  //         alert("Failed to fetch your current location.");
-  //       }
-  //     );
-  //   } else {
-  //     alert("Geolocation is not supported by your browser.");
+  // useEffect(()=>{
+  //   defaultCenter = {
+  //     lat: testCoordinates[0]?.project_latitude,
+  //     lng: testCoordinates[0]?.project_longitude,
   //   }
-  // };
+  //   console.log(defaultCenter)
+  // },[testCoordinates])
+ 
 
   return (
     <div className="rounded-3xl border-2 overflow-hidden">
@@ -96,10 +121,9 @@ const MapContainer = () => {
           className={"w-full h-[90vh]  shadow-md"}
           styles={customMapStyle}
           defaultCenter={mapCenter}
-          defaultZoom={14}
+          defaultZoom={12}
           // options={{
-          //   mapTypeControl: true,
-          //   styles: customMapStyle, // Custom styles applied
+          //   styles: customMapStyle, 
           // }}
         >
           {/* Render Markers and Default InfoWindows */}
@@ -110,18 +134,15 @@ const MapContainer = () => {
                 onClick={() => setSelectedLocation(location)}
               />
               <InfoWindow
+              
                 position={{
-                  lat: location.project_latitude,
+                  lat: location.project_latitude + 0.0105,
                   lng: location.project_longitude,
                 }}
               >
                 <Card className="max-w-60 border-none rounded-lg shadow-lg bg-white">
                   <CardContent className="p-4">
-                    {/* <img
-                      src={`https://maps.googleapis.com/maps/api/streetview?size=400x200&location=${location.project_latitude},${location.project_longitude}&key=${apiKey}`}
-                      alt="Street View"
-                      className="w-full h-auto"
-                    /> */}
+                  
                     <h3 className="font-bold">{location.project_name_eng}</h3>
                     <a
                       href={location["Project URL"]}
@@ -141,7 +162,7 @@ const MapContainer = () => {
           {selectedLocation?.project_latitude && selectedLocation?.project_longitude && (
             <InfoWindow
               position={{
-                lat: selectedLocation.project_latitude,
+                lat: selectedLocation.project_latitude + 0.0105,
                 lng: selectedLocation.project_longitude,
               }}
               onCloseClick={() => setSelectedLocation(null)}
@@ -152,31 +173,14 @@ const MapContainer = () => {
                   <a
                       href={location["Project URL"]}
                       target="_blank"
-                      rel="noopener noreferrer"
                       className="text-cyan-600 hover:underline text-xs"
                     >
                       {selectedLocation["Project URL"]}
                     </a>
                 </CardContent>
-                {/* <CardFooter>
-                  <Button
-                  // onClick={() =>
-                  //   getDirections({
-                  //     lat: selectedLocation.lat,
-                  //     lng: selectedLocation.lng,
-                  //   })
-                  // }
-                  >
-                    Get Directions
-                  </Button>
-                </CardFooter> */}
+               
               </Card>
             </InfoWindow>
-          )}
-
-          {/* Render Directions if Available */}
-          {directionsResponse && (
-            <DirectionsRenderer directions={directionsResponse} />
           )}
         </Map>
       </APIProvider>

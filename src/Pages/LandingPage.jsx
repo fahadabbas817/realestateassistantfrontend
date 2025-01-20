@@ -1,79 +1,79 @@
 import { chatService } from "@/api/chat";
 import BackgroundIcons from "@/components/BackgroundIcons";
 import ChatContainer from "@/components/ChatContainer";
-import ChatInput from "@/components/ChatInput";
+
 import HeroSection from "@/components/HeroSection";
 import LanguageSelector from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Tooltip } from "@/components/ui/tooltip";
 import useAppStore from "@/state/zustand";
 import { motion } from "framer-motion";
-import { ArrowUpRight, MessageSquareDiff, Send, SendHorizontal, Turtle } from "lucide-react";
-import { FiSend } from "react-icons/fi";
+import {
 
-import { useState } from "react";
-import MapContainer from "@/components/MapContainer";
+  MessageSquareDiff,
+
+  SendHorizontal,
+} from "lucide-react";
+
+
+import { useEffect, useState } from "react";
+
 import RecommenderComponent from "@/components/RecommenderComponent";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18n";
 
 export default function App() {
+  const { t } = useTranslation();
 
- 
-  const {t} = useTranslation()
+  // States for the page
+  const [language, setLanguage] = useState(t("English"));
   const [isFocused, setIsFocused] = useState(false);
-  const [messages, setMessages] = useState([{text: "Hi, I’m your smart real estate companion, here to find your perfect property and answer all your real estate questions!", isUser: false, isLoading: false}]);
   const [isChat, setIsChat] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [convHistory,setConvHistory] = useState([{role: 'assistant', content:{SQL_QUERY:'No',Response:"Hi, I’m your smart real estate companion, here to find your perfect property and answer all your real estate questions!"}}])
-  // [{"role":"assistent", "content": {"SQL_QUERY":"No","Response":insight}}, {"role":"user", "content": {"SQL_QUERY":"No","Response":user_input}} ]
-const {showRecommendation,setShowRecommendation,setLatLongDetails} = useAppStore()
-  const [language,setLanguage] = useState('English')
-  
-
- 
-
-  const examples = [
+  const [messages, setMessages] = useState([
+    { text: t("introMessage"), isUser: false, isLoading: false },
+  ]);
+  const [convHistory, setConvHistory] = useState([
     {
-      exampleText: "🏠 Nearby properties",
-      prompt: "Please show me a list of properties available for sale or rent near my current location."
+      role: "assistant",
+      content: { SQL_QUERY: "No", Response: t("introMessage") },
     },
-    {
-      exampleText: "💰 Budget homes",
-      prompt: "Can you help me find homes that are within my specified budget range and preferred location?"
-    },
-    {
-      exampleText: "🌟 Popular areas",
-      prompt: "I'd like to explore popular neighborhoods in the city to consider for buying or renting a home."
-    },
-    {
-      exampleText: "🏡 Luxury villas",
-      prompt: "Show me a collection of luxury villas available for purchase or rent in high-end neighborhoods."
-    },
-    {
-      exampleText: "🏢 Commercial spaces",
-      prompt: "I’m looking for commercial spaces nearby that are suitable for offices or retail stores."
-    },
-    {
-      exampleText: "🌊 Waterfront homes",
-      prompt: "Can you provide options for waterfront properties available for sale or rent in my area?"
-    }
-  ];
-  
+  ]);
+  const { showRecommendation, setShowRecommendation, setLatLongDetails } =
+    useAppStore();
 
+  // Use effect for changing the text language whenever there is change in the language
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setMessages([
+        { text: t("introMessage"), isUser: false, isLoading: false },
+      ]);
+      setConvHistory([
+        {
+          role: "assistant",
+          content: { SQL_QUERY: "No", Response: t("introMessage") },
+        },
+      ]);
+      setLanguage(t("language"));
+    };
+    // listenere function to change the lnaguae of the page on every change in the language
+    i18n.on("languageChanged", handleLanguageChange);
 
+    // To clean up on umount
+    return () => {
+      i18n.off("languageChanged", handleLanguageChange);
+    };
+  }, [i18n, t]);
 
+  const examples = t("examples", { returnObjects: true });
+
+  // Handler funtion for the chat
   const handleSend = async () => {
     if (!inputValue.trim()) return;
-   
+
+    // toggle the chat to true so that chatContaienr could come in place of heroSection
     if (!isChat) {
       setIsChat(true);
-    }
-
-    // dummy displayer of recommended sections
-    if(inputValue==='show recommendation'){
-      setShowRecommendation(!showRecommendation)
     }
 
     // Add user message
@@ -81,103 +81,81 @@ const {showRecommendation,setShowRecommendation,setLatLongDetails} = useAppStore
       ...prev,
       { text: inputValue, isUser: true, isLoading: false },
     ]);
-    setConvHistory((prev)=>[...prev,{role: 'user', content:{SQL_QUERY:"No",Response: inputValue} }])
-    const tempMessage = { text: "", isUser: false, isLoading: true }
-    setMessages((prev) => [
+    setConvHistory((prev) => [
       ...prev,
-      tempMessage,
+      { role: "user", content: { SQL_QUERY: "No", Response: inputValue } },
     ]);
+    const tempMessage = { text: "", isUser: false, isLoading: true };
+    setMessages((prev) => [...prev, tempMessage]);
     // backend response from the api
     try {
-     const data =   await chatService(inputValue,convHistory,language)
-     console.log(data)
-   
+      const data = await chatService(inputValue, convHistory, language);
+      console.log(data);
+      setInputValue("");
+      //  state updateer to update the state to include current response from the api at the last index
+      setMessages((prev) => {
+        const updatedMessages = [...prev];
+        updatedMessages[updatedMessages.length - 1] = {
+          text: data.Response,
+          isUser: false,
+          isLoading: false,
+        };
+        return updatedMessages;
+      });
+      console.log(data.lat_long_details_list?.length);
 
-    //  dummy data for the locations that will eventually get from backend
-    // setLatLongDetails( [{'project_id': 15, 'Project URL': 'https://sakani.sa/app/offplan-projects/15', 'project_name_eng': 'Abha - Ali Shar - Abha Hills', project_latitude: 18.286109, project_longitude: 42.513347}])
+      // Google Map section toggler that checks if there is any object in the latlongDetails then set the latLongDetails to it and set show recommendation to true that displays the google map section from the right side
+      if (data.lat_long_details_list?.length > 0) {
+        setLatLongDetails(data.lat_long_details_list);
+        setShowRecommendation(true);
+        console.log(data.lat_long_details_list);
+      }
 
-       setMessages((prev) => {
-      const updatedMessages = [...prev];
-      updatedMessages[updatedMessages.length - 1] = {
-        // SQL_QUERY:data.SQL_QUERY,
-        text: data.Response,
-        isUser: false,
-        isLoading: false,
-      };
-      return updatedMessages;
-    });
-    console.log(data.lat_long_details_list.length)
-    if(data.lat_long_details_list?.length>0){
-     setLatLongDetails(data.lat_long_details_list)
-     setShowRecommendation(true)  
-     console.log(data.lat_long_details_list)
-    }
-
-    setConvHistory((prev)=>[...prev,{role: 'assistant', content:{SQL_QUERY:data.SQL_QUERY,Response: data.Response}}])
-
+      setConvHistory((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: { SQL_QUERY: data.SQL_QUERY, Response: data.Response },
+        },
+      ]);
     } catch (error) {
-      console.log(error.message || 'something went wrong')
+      console.log(error.message || "something went wrong");
+      setInputValue("");
+      setMessages((prev) => {
+        const updatedMessages = [...prev];
+        updatedMessages[updatedMessages.length - 1] = {
+          text: 'Something went wrong please try again',
+          isUser: false,
+          isLoading: false,
+        };
+        return updatedMessages;
+      });
     }
 
-    setInputValue("");
-
-
-    // Simulate bot response just for mocking
-    // setTimeout(() => {
-    //   const botResponse =
-    //     "I'm your real estate assistant. I can help you find properties that match your criteria.";
-    //   setMessages((prev) => {
-    //     const updatedMessages = [...prev];
-    //     updatedMessages[updatedMessages.length - 1] = {
-    //       text: botResponse,
-    //       isUser: false,
-    //       isLoading: false,
-    //     };
-    //     return updatedMessages;
-    //   });
-
-    //   setConvHistory((prev) => [
-    //     ...prev,
-    //     { role: "assistant", content: botResponse },
-    //   ]);
-    // }, 5000);
-
-    console.log(convHistory)
-    console.log(language)
-   
+    console.log(convHistory);
   };
 
-  const handleNewChat = () =>{
-    setIsChat(false)
-    setConvHistory([{role: 'assistant', content:"Hi, I’m your smart real estate companion, here to find your perfect property and answer all your real estate questions!"}])
-    setInputValue("")
-    setMessages([{text: "Hi, I’m your smart real estate companion, here to find your perfect property and answer all your real estate questions!", isUser: false, isLoading: false}])
-  }
+  const handleNewChat = () => {
+    setIsChat(false);
+    setConvHistory([{ role: "assistant", content: t("introMessage") }]);
+    setInputValue("");
+    setMessages([{ text: t("introMessage"), isUser: false, isLoading: false }]);
+  };
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-r from-slate-900 to-slate-700 text-white flex relative overflow-hidden">
       <BackgroundIcons />
       {/* Main Content */}
       <div className="container mx-auto  px-4 py-20 relative z-10">
-      <div className={`chat-wrapper ${isChat ? "flex flex-col " : ""}`}>
-    {isChat ? (
-      
-      <div className="h-[65vh] overflow-y-hidden rounded-xl max-w-3xl md:max-w-4xl w-full mx-auto">
-      
-        <ChatContainer messages={messages} />
-      </div>
-     
-  
-    ) : (
-      <>
-      <HeroSection />
-      {/* <MapContainer locations={locations}  /> */}
-      </>
-    )}
-  </div>
-
-        {/* Chat Input */}
-        {/* <ChatInput/> */}
+        <div className={`chat-wrapper ${isChat ? "flex flex-col " : ""}`}>
+          {isChat ? (
+            <div className="h-[65vh] overflow-y-hidden rounded-xl max-w-3xl md:max-w-4xl w-full mx-auto">
+              <ChatContainer messages={messages} />
+            </div>
+          ) : (
+            <HeroSection />
+          )}
+        </div>
         <div className="max-w-3xl md:max-w-4xl w-full mx-auto sticky">
           {/* Glowing Background Effect */}
           <motion.div
@@ -211,7 +189,7 @@ const {showRecommendation,setShowRecommendation,setLatLongDetails} = useAppStore
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               className="w-full textarea h-20 border-none bg-transparent text-white placeholder:text-gray-400 text-lg p-6 rounded-3xl relative z-10 backdrop-blur-sm resize-none"
-              placeholder="Hi, I’m your smart real estate companion, here to find your perfect property and answer all your real estate questions!"
+              placeholder={t("textArea.placeholder")}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               onKeyDown={(e) => {
@@ -222,50 +200,54 @@ const {showRecommendation,setShowRecommendation,setLatLongDetails} = useAppStore
               }}
             />
             <div className="sendButton flex justify-end gap-2  items-center p-1 mr-1">
-            {isChat&&<Button onClick={handleNewChat} className="bg-slate-700 rounded-full flex items-center" ><MessageSquareDiff className="h-12 w-12" absoluteStrokeWidth /> <span>New Chat</span></Button>}
+              {isChat && (
+                <Button
+                  onClick={handleNewChat}
+                  className="bg-slate-700 rounded-full flex items-center"
+                >
+                  <MessageSquareDiff
+                    className="h-12 w-12"
+                    absoluteStrokeWidth
+                  />{" "}
+                  <span>{t("textArea.newChatBtn")}</span>
+                </Button>
+              )}
               <LanguageSelector language={language} setLanguage={setLanguage} />
               <Button
-              variant='outline'
-              
+                variant="outline"
                 onClick={handleSend}
                 className="text-slate-800  rounded-full  bg-white transition-all ease-in hover:bg-slate-800 hover:text-white"
               >
-              
-               <SendHorizontal className="h-16 w-16" strokeWidth={2.5} absoluteStrokeWidth />
-              <span className="font-semibold">Send</span>
+                <SendHorizontal
+                  className="h-16 w-16"
+                  strokeWidth={2.5}
+                  absoluteStrokeWidth
+                />
+                <span className="font-semibold">{t("textArea.sendBtn")}</span>
               </Button>
-
             </div>
           </div>
         </div>
         {/* Example Buttons */}
-        {!isChat&&<div className="flex flex-wrap gap-2 justify-center max-w-3xl   mt-6  mx-auto ">
-          <div className="suggestions flex flex-wrap gap-2 justify-center ">
-            {examples.map((query,index) => (
-              
-              <Button
-                key={index}
-                onClick={()=>setInputValue(query.prompt)}
-                className=" rounded-full bg-transparent text-slate-300 hover:bg-gray-900/50 transition-colors text-sm backdrop-blur-sm border border-slate-300"
-              >
-               <span>{query.exampleText}</span> 
-               {/* <ArrowUpRight className="text-cyan-400"/> */}
-              </Button>
-             
-            ))}
+        {!isChat && (
+          <div className="flex flex-wrap gap-2 justify-center max-w-3xl   mt-6  mx-auto ">
+            <div className="suggestions flex flex-wrap gap-2 justify-center ">
+              {examples.map((query, index) => (
+                <Button
+                  key={index}
+                  onClick={() => setInputValue(query.prompt)}
+                  className=" rounded-full bg-transparent text-slate-300 hover:bg-gray-900/50 transition-colors text-sm backdrop-blur-sm border border-slate-300"
+                >
+                  <span>{query.exampleText}</span>
+                  {/* <ArrowUpRight className="text-cyan-400"/> */}
+                </Button>
+              ))}
+            </div>
           </div>
-        </div>}
-        {/* Footer Text */}
-        {/* <div className="text-center mt-20 text-gray-500">
-          Loved by 30 million software creators, including teams at:
-        </div> */}
+        )}
       </div>
 
-        <div>
-           { showRecommendation && <RecommenderComponent/>}
-        </div>
-
-
+      <div>{showRecommendation && <RecommenderComponent />}</div>
     </div>
   );
 }
