@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import ChatMessage from "./ChatMessage";
 import { useEffect, useRef } from "react";
+import RecommenderComponent from "./RecommenderComponent";
 
 export default function ChatContainer({ messages }) {
   const scrollRef = useRef(null);
@@ -15,6 +16,7 @@ export default function ChatContainer({ messages }) {
   }, [messages]);
 
   return (
+
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

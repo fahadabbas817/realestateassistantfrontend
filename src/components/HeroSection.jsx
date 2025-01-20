@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion';
 import ChatMessage from './ChatMessage';
+import { useTranslation } from 'react-i18next';
 
 const HeroSection = () => {
+
+  const {t} = useTranslation()
   const phrases = [
     "Dream Property",
     "Ideal Home",
@@ -20,10 +23,11 @@ const HeroSection = () => {
   >
     {/* <h1 className='text-4xl font-extrabold text-white md:text-5xl'>Real Estate AI Assistant</h1> */}
     <h1 className=" font-heading font  text-4xl font-bold text-white md:text-5xl ">
-      Find Your{" "}
+      {/* Find Your{" "}
       <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent font-extrabold animate-pulse">Dream Property</span>{" "}
-     {/* <br /> */}
-      with Ease!
+    
+      with Ease! */}
+      {t("hero.title")}
     </h1>
     <p className="mt-2 text-lg text-slate-300 md:text-xl">
       Let our{" "} Real Estate

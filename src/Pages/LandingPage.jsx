@@ -13,20 +13,26 @@ import { ArrowUpRight, MessageSquareDiff, Send, SendHorizontal, Turtle } from "l
 import { FiSend } from "react-icons/fi";
 
 import { useState } from "react";
+import MapContainer from "@/components/MapContainer";
+import RecommenderComponent from "@/components/RecommenderComponent";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 
 export default function App() {
 
  
-
+  const {t} = useTranslation()
   const [isFocused, setIsFocused] = useState(false);
   const [messages, setMessages] = useState([{text: "Hi, I’m your smart real estate companion, here to find your perfect property and answer all your real estate questions!", isUser: false, isLoading: false}]);
   const [isChat, setIsChat] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [convHistory,setConvHistory] = useState([{role: 'assistant', content:{SQL_QUERY:'No',Response:"Hi, I’m your smart real estate companion, here to find your perfect property and answer all your real estate questions!"}}])
   // [{"role":"assistent", "content": {"SQL_QUERY":"No","Response":insight}}, {"role":"user", "content": {"SQL_QUERY":"No","Response":user_input}} ]
-
+const {showRecommendation,setShowRecommendation,setLatLongDetails} = useAppStore()
   const [language,setLanguage] = useState('English')
+  
 
+ 
 
   const examples = [
     {
@@ -64,6 +70,12 @@ export default function App() {
     if (!isChat) {
       setIsChat(true);
     }
+
+    // dummy displayer of recommended sections
+    if(inputValue==='show recommendation'){
+      setShowRecommendation(!showRecommendation)
+    }
+
     // Add user message
     setMessages((prev) => [
       ...prev,
@@ -79,6 +91,11 @@ export default function App() {
     try {
      const data =   await chatService(inputValue,convHistory,language)
      console.log(data)
+   
+
+    //  dummy data for the locations that will eventually get from backend
+    // setLatLongDetails( [{'project_id': 15, 'Project URL': 'https://sakani.sa/app/offplan-projects/15', 'project_name_eng': 'Abha - Ali Shar - Abha Hills', project_latitude: 18.286109, project_longitude: 42.513347}])
+
        setMessages((prev) => {
       const updatedMessages = [...prev];
       updatedMessages[updatedMessages.length - 1] = {
@@ -89,6 +106,12 @@ export default function App() {
       };
       return updatedMessages;
     });
+    console.log(data.lat_long_details_list.length)
+    if(data.lat_long_details_list?.length>0){
+     setLatLongDetails(data.lat_long_details_list)
+     setShowRecommendation(true)  
+     console.log(data.lat_long_details_list)
+    }
 
     setConvHistory((prev)=>[...prev,{role: 'assistant', content:{SQL_QUERY:data.SQL_QUERY,Response: data.Response}}])
 
@@ -132,18 +155,24 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-slate-900 to-slate-700 text-white relative overflow-hidden">
+    <div className="min-h-screen w-full bg-gradient-to-r from-slate-900 to-slate-700 text-white flex relative overflow-hidden">
       <BackgroundIcons />
       {/* Main Content */}
       <div className="container mx-auto  px-4 py-20 relative z-10">
       <div className={`chat-wrapper ${isChat ? "flex flex-col " : ""}`}>
     {isChat ? (
-      <div className="h-[65vh] overflow-hidden rounded-xl max-w-3xl md:max-w-4xl w-full mx-auto">
+      
+      <div className="h-[65vh] overflow-y-hidden rounded-xl max-w-3xl md:max-w-4xl w-full mx-auto">
       
         <ChatContainer messages={messages} />
       </div>
+     
+  
     ) : (
+      <>
       <HeroSection />
+      {/* <MapContainer locations={locations}  /> */}
+      </>
     )}
   </div>
 
@@ -181,7 +210,7 @@ export default function App() {
             <Textarea
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              className="w-full h-20 border-none bg-transparent text-white placeholder:text-gray-400 text-lg p-6 rounded-3xl relative z-10 backdrop-blur-sm resize-none"
+              className="w-full textarea h-20 border-none bg-transparent text-white placeholder:text-gray-400 text-lg p-6 rounded-3xl relative z-10 backdrop-blur-sm resize-none"
               placeholder="Hi, I’m your smart real estate companion, here to find your perfect property and answer all your real estate questions!"
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
@@ -231,6 +260,12 @@ export default function App() {
           Loved by 30 million software creators, including teams at:
         </div> */}
       </div>
+
+        <div>
+           { showRecommendation && <RecommenderComponent/>}
+        </div>
+
+
     </div>
   );
 }
