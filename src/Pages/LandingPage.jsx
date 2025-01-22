@@ -10,6 +10,8 @@ import useAppStore from "@/state/zustand";
 import { motion } from "framer-motion";
 import {
 
+  Map,
+  MapPinned,
   MessageSquareDiff,
 
   SendHorizontal,
@@ -21,6 +23,7 @@ import { useEffect, useState } from "react";
 import RecommenderComponent from "@/components/RecommenderComponent";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18n";
+import CardsContainer from "@/components/CardsContainer";
 
 export default function App() {
   const { t } = useTranslation();
@@ -39,7 +42,7 @@ export default function App() {
       content: { SQL_QUERY: "No", Response: t("introMessage") },
     },
   ]);
-  const { showRecommendation, setShowRecommendation, setLatLongDetails } =
+  const { showRecommendation, setShowRecommendation, setLatLongDetails, showRecommendationCards,setShowRecommendationCards  } =
     useAppStore();
 
   // Use effect for changing the text language whenever there is change in the language
@@ -68,28 +71,31 @@ export default function App() {
   const examples = t("examples", { returnObjects: true });
 
   // Handler funtion for the chat
-  const handleSend = async () => {
-    if (!inputValue.trim()) return;
+  const handleSend = async (prompt) => {
+    if (!prompt.trim()) return;
 
     // toggle the chat to true so that chatContaienr could come in place of heroSection
     if (!isChat) {
       setIsChat(true);
     }
+    if(showRecommendationCards){
+      setShowRecommendationCards(false)
+    }
 
     // Add user message
     setMessages((prev) => [
       ...prev,
-      { text: inputValue, isUser: true, isLoading: false },
+      { text: prompt, isUser: true, isLoading: false },
     ]);
     setConvHistory((prev) => [
       ...prev,
-      { role: "user", content: { SQL_QUERY: "No", Response: inputValue } },
+      { role: "user", content: { SQL_QUERY: "No", Response: prompt } },
     ]);
     const tempMessage = { text: "", isUser: false, isLoading: true };
     setMessages((prev) => [...prev, tempMessage]);
     // backend response from the api
     try {
-      const data = await chatService(inputValue, convHistory, language);
+      const data = await chatService(prompt, convHistory, language);
       console.log(data);
       setInputValue("");
       //  state updateer to update the state to include current response from the api at the last index
@@ -107,7 +113,9 @@ export default function App() {
       // Google Map section toggler that checks if there is any object in the latlongDetails then set the latLongDetails to it and set show recommendation to true that displays the google map section from the right side
       if (data.lat_long_details_list?.length > 0) {
         setLatLongDetails(data.lat_long_details_list);
+        setShowRecommendationCards(true)
         setShowRecommendation(true);
+        
         console.log(data.lat_long_details_list);
       }
 
@@ -142,20 +150,23 @@ export default function App() {
     setMessages([{ text: t("introMessage"), isUser: false, isLoading: false }]);
   };
 
+
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-slate-900 to-slate-700 text-white flex relative overflow-hidden">
+    <div className="min-h-screen w-full bg-gradient-to-r from-slate-900 to-slate-700 flex text-white relative overflow-hidden">
+     
       <BackgroundIcons />
       {/* Main Content */}
-      <div className="container mx-auto  px-4 py-20 relative z-10">
+      <div className={`"container mx-auto ${isChat?'py-4':"py-20"}  px-4 relative z-10"`}>
         <div className={`chat-wrapper ${isChat ? "flex flex-col " : ""}`}>
           {isChat ? (
-            <div className="h-[65vh] overflow-y-hidden rounded-xl max-w-3xl md:max-w-4xl w-full mx-auto">
-              <ChatContainer messages={messages} />
+            <div className="h-[75vh] overflow-y-hidden rounded-xl max-w-3xl md:max-w-4xl w-full mx-auto">
+              <ChatContainer messages={messages} handleSend={handleSend} />
             </div>
           ) : (
             <HeroSection />
           )}
         </div>
+        {/* {showRecommendationCards && <div className=" mx-auto relative flex justify-center max-w-3xl md:max-w-4xl"> <CardsContainer/></div>} */}
         <div className="max-w-3xl md:max-w-4xl w-full mx-auto sticky">
           {/* Glowing Background Effect */}
           <motion.div
@@ -184,7 +195,9 @@ export default function App() {
             }}
           />
 
+          
           <div className="relative border-slate-500 border min-h-[120px] bg-gray-900/90 rounded-3xl transition-all ease-in py-1 focus-within:border-2 focus-within:border-cyan-400">
+         
             <Textarea
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
@@ -195,15 +208,16 @@ export default function App() {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  handleSend();
+                  handleSend(inputValue);
                 }
               }}
             />
-            <div className="sendButton flex justify-end gap-2  items-center p-1 mr-1">
+            <div className="sendButton flex justify-end gap-4 transition-all ease-in  items-center p-1 mr-1">
               {isChat && (
+                <>
                 <Button
                   onClick={handleNewChat}
-                  className="bg-slate-700 rounded-full flex items-center"
+                  className="bg-slate-700 hover:border transition ease-in rounded-full flex items-center"
                 >
                   <MessageSquareDiff
                     className="h-12 w-12"
@@ -211,11 +225,14 @@ export default function App() {
                   />{" "}
                   <span>{t("textArea.newChatBtn")}</span>
                 </Button>
+               <Button onClick={()=>setShowRecommendation(true)} className='bg-slate-700 hover:border transition ease-in rounded-full flex items-center'> <MapPinned /> <span>Show Map</span> </Button>
+              
+               </>
               )}
               <LanguageSelector language={language} setLanguage={setLanguage} />
               <Button
                 variant="outline"
-                onClick={handleSend}
+                onClick={()=>handleSend(inputValue)}
                 className="text-slate-800  rounded-full  bg-white transition-all ease-in hover:bg-slate-800 hover:text-white"
               >
                 <SendHorizontal

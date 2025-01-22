@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card"; // ShadCN Card components
 import {
@@ -7,6 +7,7 @@ import {
   APIProvider,
   Map,
   InfoWindow,
+  useAdvancedMarkerRef
 } from "@vis.gl/react-google-maps";
 import useAppStore from "@/state/zustand";
 
@@ -42,7 +43,7 @@ const MapContainer = () => {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
   const [mapZoom, setMapZoom] = useState(14);
-
+  const [markerRef, marker] = useAdvancedMarkerRef();
 
 let defaultCenter = { };
 let testCoordinates = [
@@ -116,12 +117,13 @@ let testCoordinates = [
 
   return (
     <div className="rounded-3xl border-2 overflow-hidden">
-      <APIProvider apiKey={apiKey}>
+      <APIProvider apiKey={apiKey} libraries={['marker']}>
         <Map
           className={"w-full h-[90vh]  shadow-md"}
           styles={customMapStyle}
           defaultCenter={mapCenter}
-          defaultZoom={12}
+         
+          defaultZoom={11}
           // options={{
           //   styles: customMapStyle, 
           // }}
@@ -130,20 +132,21 @@ let testCoordinates = [
           {latLongDetails.map((location, index) => (
             <React.Fragment key={index}>
               <Marker
+                 
                 position={{ lat: location.project_latitude, lng: location.project_longitude}}
                 onClick={() => setSelectedLocation(location)}
+              
               />
               <InfoWindow
-              
+             
                 position={{
                   lat: location.project_latitude + 0.0105,
                   lng: location.project_longitude,
                 }}
               >
-                <Card className="max-w-60 border-none rounded-lg shadow-lg bg-white">
-                  <CardContent className="p-4">
+                <div className="max-w-60 border-none rounded-lg p-1 shadow-lg bg-white">
                   
-                    <h3 className="font-bold">{location.project_name_eng}</h3>
+                    <h3 className="font-bold text-black">{location.project_name_eng}</h3>
                     <a
                       href={location["Project URL"]}
                       target="_blank"
@@ -152,8 +155,8 @@ let testCoordinates = [
                     >
                       {location["Project URL"]}
                     </a>
-                  </CardContent>
-                </Card>
+                  
+                </div>
               </InfoWindow>
             </React.Fragment>
           ))}

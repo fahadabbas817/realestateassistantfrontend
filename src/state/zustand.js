@@ -7,10 +7,13 @@ const useAppStore = create((set) => ({
   showRecommendation:false,
   setShowRecommendation:(value)=>set({showRecommendation:value}),
 
+  showRecommendationCards:false,
+  setShowRecommendationCards:(value)=>set({showRecommendationCards:value}),
+
   latLongDetails:[{}],
-  setLatLongDetails:(data)=>set({latLongDetails:data})
+  setLatLongDetails:(data)=>set({latLongDetails:data}),
 
-
+  
   
 }));
 
