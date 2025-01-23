@@ -150,7 +150,7 @@ let testCoordinates = [
                     <a
                       href={location["Project URL"]}
                       target="_blank"
-                      // rel="noopener noreferrer"
+                      rel="noopener noreferrer"
                       className="text-cyan-600 hover:underline text-xs"
                     >
                       {location["Project URL"]}
