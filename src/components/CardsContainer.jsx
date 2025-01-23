@@ -27,13 +27,13 @@ let testCoordinates = [
     project_latitude: 24.690247,
     project_longitude: 46.6854,
   },
-  {
-    project_id: 4,
-    "Project URL": "https://sakani.sa/app/offplan-projects/4",
-    project_name_eng: "Riyadh Green Oasis",
-    project_latitude: 24.726658,
-    project_longitude: 46.767417,
-  },
+  // {
+  //   project_id: 4,
+  //   "Project URL": "https://sakani.sa/app/offplan-projects/4",
+  //   project_name_eng: "Riyadh Green Oasis",
+  //   project_latitude: 24.726658,
+  //   project_longitude: 46.767417,
+  // },
 //   {
 //     project_id: 5,
 //     "Project URL": "https://sakani.sa/app/offplan-projects/5",
@@ -90,17 +90,17 @@ const CardsContainer = ({handleSend}) => {
         {/* have to map with latLongDetails for the coordinates test coordinates is just for testing */}
       {latLongDetails.map((location, index) => {
         return (
-          <Card key={index} onClick={()=>handleSelectedCard(location.project_id,location.project_name_eng)} className={`w-50 ${location.project_id===selectedCard?'bg-cyan-700':"bg-slate-600/90"}  border-cyan-400 shadow-lg rounded-xl max-w-52 hover:text-black  text-wrap content-center cursor-pointer hover:bg-cyan-600 transition-all ease-in`}>
+          <Card key={index} onClick={()=>handleSelectedCard(location.project_id,location.project_name_eng)} className={`w-50 ${location.project_id===selectedCard?'bg-cyan-700':"bg-slate-600/90"}  border-cyan-400 shadow-lg rounded-3xl max-w-52 hover:text-black  text-wrap content-center cursor-pointer hover:bg-cyan-600 transition-all ease-in`}>
             <CardContent className='text-wrap whitespace-pre-wrap text-sm p-4'>
               <h3 className="font-bold text-slate-200 text-sm">{location.project_name_eng}</h3>
-              <a
+              {/* <a
                 // href={location["Project URL"]}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="text-cyan-400 hover:underline text-xs "
               >
                 {location["Project URL"]}
-              </a>
+              </a> */}
             </CardContent>
           </Card>
         );
