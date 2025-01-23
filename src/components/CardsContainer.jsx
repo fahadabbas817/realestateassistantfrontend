@@ -83,7 +83,7 @@ const CardsContainer = ({handleSend}) => {
     animate={{ x: 0, opacity: 1 }}
     exit={{ x: '100%', opacity: 0 }}
     transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-     className="bg-transparent  container ml-2 bottom-0 w-full  max-w-4xl relative z-20 backdrop-blur-sm">
+     className="bg-transparent  container ml-2 bottom-0 w-full  max-w-4xl relative  backdrop-blur-sm">
       {/* <Button variant='icon' className='hover:bg-slate-400  hover:text-black text-cyan-400 cursor-pointer transition ease-in rounded-full'  onClick={handleClose}><X className="h-8 w-8"/></Button> */}
       <h3 className=" text-slate-100 ml-2">Select One of the following Project to continue</h3>
     <div className="relative  rounded-3xl flex flex-wrap justify-start border-slate-500 max-w-4xl gap-2  p-2">
