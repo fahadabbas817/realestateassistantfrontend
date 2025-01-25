@@ -210,7 +210,7 @@ export default function App() {
             <div className="h-[75vh] overflow-y-hidden rounded-xl max-w-3xl md:max-w-4xl w-full mx-auto">
               {/* <ChatContainer messages={messages} handleSend={handleSend} /> */}
               {/* <StreamingAvatarWrapper/> */}
-              <div className={`${showRecommendation?"max-w-xl overflow-hidden remove-scrollbar ":""} bottom-6 border container`}>
+              <div className={`${showRecommendation?"max-w-xl overflow-hidden remove-scrollbar ":""} bottom-6 container`}>
                 <div>
                   {/* <Button
                     onClick={handleCreateNewSession}
