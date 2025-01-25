@@ -129,7 +129,7 @@ let testCoordinates = [
           // }}
         >
           {/* Render Markers and Default InfoWindows */}
-          {testCoordinates.map((location, index) => (
+          {latLongDetails.map((location, index) => (
             <React.Fragment key={index}>
               <Marker
                  

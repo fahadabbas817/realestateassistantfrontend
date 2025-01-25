@@ -4,7 +4,10 @@ export interface NewSessionApiRequest {
     voice?: {
         voice_id?: string;
         rate?: number;
-    };
+        language?:string
+    },
+    language?:string
+    
 }
 
 export interface ICEServer {

@@ -6,6 +6,10 @@ const resources = {
   en: {
     translation: {
       language:"English",
+      avatarVoice:{
+        voice_id: '76955c80188a4c149df169b5dc9e1a3a',
+        language:"English" 
+      },
       hero: {
         titlePart1: "Find Your",
         titlePart2:'Dream Property',
@@ -51,6 +55,10 @@ const resources = {
   ar: {
     translation: {
       language:"العربية",
+      avatarVoice:{
+        voice_id: "02bec3b4cb514722a84e4e18d596fddf",
+        language: "Arabic" 
+      },
       hero: {
         titlePart1: "ابحث عن",
         titlePart2: "عقار أحلامك",

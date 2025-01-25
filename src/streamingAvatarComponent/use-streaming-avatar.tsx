@@ -3,6 +3,8 @@
 import {  useCallback, useEffect, useState } from "react";
 import { closeConnection, createNewSession, repeat, startSession, stopSession } from "./utils";
 import { NewSessionApiRequest, NewSessionApiResponse } from "./types";
+import { useTranslation } from "react-i18next";
+
 
 const empty: string[] = []
 
@@ -29,6 +31,7 @@ interface UseStreamingAvatar {
 
 export default function useStreamingAvatar(): UseStreamingAvatar {
     const [session, setSession] = useState<NewSessionApiResponse | null>(null);
+    const {t} = useTranslation()
     const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [isLoadingNewSession, setIsLoadingNewSession] = useState(false);
@@ -41,9 +44,11 @@ export default function useStreamingAvatar(): UseStreamingAvatar {
     const isLoading = isLoadingNewSession || isLoadingCloseConnection || isLoadingStartSession
     const [talkingTime, setTalkingTime] = useState<number>(0)
     const isTalking = talkingTime > 0
-    const [sessionOptions, setSessionOptions] = useState<NewSessionApiRequest>({ quality: 'high', avatar_name: 'Selina-blackabaya-20220608', voice: { voice_id: '76955c80188a4c149df169b5dc9e1a3a' } })
+    const [sessionOptions, setSessionOptions] = useState<NewSessionApiRequest>({ quality: 'high', avatar_name: 'Selina-blackabaya-20220608', voice: { voice_id: t('avatarVoice.voice_id'),language:t("avatarVoice.language") }  })
+    // const [sessionOptions, setSessionOptions] = useState<NewSessionApiRequest>({ quality: 'high', avatar_name: 'Selina-blackabaya-20220608', voice: { voice_id: "02bec3b4cb514722a84e4e18d596fddf",language:"Arabic" }  })
 
     const handleCreateNewSession = useCallback(async () => {
+        console.log(t('avatarVoice.voice_id'),t("avatarVoice.language"))
         console.log('handleCreateNewSession')
         if (isConnectionOpen) return;
         setIsLoadingNewSession(true);

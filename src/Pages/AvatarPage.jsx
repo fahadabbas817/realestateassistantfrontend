@@ -19,7 +19,7 @@ function StreamingAvatarWrapper() {
 
 
    const speakAvatar = ()=>{
-    handleRepeat("How may I help you")
+    handleRepeat("مرحبًا! كيف حالك؟ أتمنى لك يومًا سعيدًا ومليئًا بالنجاح")
    }
 
 

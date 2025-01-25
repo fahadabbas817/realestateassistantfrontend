@@ -39,11 +39,11 @@ export default function App() {
   } = useStreamingAvatar();
 
   const speakAvatar = () => {
-    handleRepeat("HOw may i help you");
+    handleRepeat("مرحبًا! كيف حالك؟ أتمنى لك يومًا سعيدًا ومليئًا بالنجاح")
   };
 
   // States for the page
-  const [language, setLanguage] = useState(t("English"));
+  const [language, setLanguage] = useState(t("language"));
   const [chatLoading,setLoading] = useState(false)
   const [isFocused, setIsFocused] = useState(false);
   const [isChat, setIsChat] = useState(false);
@@ -225,9 +225,9 @@ export default function App() {
                   >
                     Close Connection
                   </Button> */}
-                  {/* <Button onClick={speakAvatar} disabled={!isConnectionOpen}>
+                  <Button onClick={speakAvatar} disabled={!isConnectionOpen}>
                     speak
-                  </Button> */}
+                  </Button>
                 </div>
                 {/* Pass the stream to the StreamingAvatar component */}
                 {stream ? (
