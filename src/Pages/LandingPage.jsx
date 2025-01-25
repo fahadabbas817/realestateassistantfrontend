@@ -36,6 +36,7 @@ export default function App() {
     handleRepeat,
     isStarted,
     isLoading,
+    setSessionOptions,
   } = useStreamingAvatar();
 
   const speakAvatar = () => {
@@ -78,6 +79,8 @@ export default function App() {
           content: { SQL_QUERY: "No", Response: t("introMessage") },
         },
       ]);
+      setSessionOptions({ quality: 'high', avatar_name: 'Selina-blackabaya-20220608', voice: { voice_id: t('avatarVoice.voice_id'),language:t("avatarVoice.language") }  })
+
       setLanguage(t("language"));
     };
     // listenere function to change the lnaguae of the page on every change in the language

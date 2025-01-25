@@ -44,7 +44,7 @@ export default function useStreamingAvatar(): UseStreamingAvatar {
     const isLoading = isLoadingNewSession || isLoadingCloseConnection || isLoadingStartSession
     const [talkingTime, setTalkingTime] = useState<number>(0)
     const isTalking = talkingTime > 0
-    const [sessionOptions, setSessionOptions] = useState<NewSessionApiRequest>({ quality: 'high', avatar_name: 'Selina-blackabaya-20220608', voice: { voice_id: t('avatarVoice.voice_id'),language:t("avatarVoice.language") }  })
+    const [sessionOptions, setSessionOptions] = useState<NewSessionApiRequest>({ quality: 'high', avatar_name: 'Selina-blackabaya-20220608', voice: { voice_id: "76955c80188a4c149df169b5dc9e1a3a",language:"English"}  })
     // const [sessionOptions, setSessionOptions] = useState<NewSessionApiRequest>({ quality: 'high', avatar_name: 'Selina-blackabaya-20220608', voice: { voice_id: "02bec3b4cb514722a84e4e18d596fddf",language:"Arabic" }  })
 
     const handleCreateNewSession = useCallback(async () => {
