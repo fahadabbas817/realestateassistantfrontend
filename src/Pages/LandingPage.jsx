@@ -188,10 +188,12 @@ export default function App() {
   };
 
   const handleNewChat = () => {
+    handleCloseConnection()
     setIsChat(false);
     setConvHistory([{ role: "assistant", content: t("introMessage") }]);
     setInputValue("");
     setMessages([{ text: t("introMessage"), isUser: false, isLoading: false }]);
+
   };
 
   return (
@@ -208,7 +210,7 @@ export default function App() {
             <div className="h-[75vh] overflow-y-hidden rounded-xl max-w-3xl md:max-w-4xl w-full mx-auto">
               {/* <ChatContainer messages={messages} handleSend={handleSend} /> */}
               {/* <StreamingAvatarWrapper/> */}
-              <div className={`${showRecommendation?"max-w-xl overflow-hidden remove-scrollbar ":""}  container`}>
+              <div className={`${showRecommendation?"max-w-xl overflow-hidden remove-scrollbar ":""} bottom-6 border container`}>
                 <div>
                   {/* <Button
                     onClick={handleCreateNewSession}
@@ -228,9 +230,9 @@ export default function App() {
                   >
                     Close Connection
                   </Button> */}
-                  <Button onClick={speakAvatar} disabled={!isConnectionOpen}>
+                  {/* <Button onClick={speakAvatar} disabled={!isConnectionOpen}>
                     speak
-                  </Button>
+                  </Button> */}
                 </div>
                 {/* Pass the stream to the StreamingAvatar component */}
                 {stream ? (
