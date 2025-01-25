@@ -83,24 +83,24 @@ const CardsContainer = ({handleSend}) => {
     animate={{ x: 0, opacity: 1 }}
     exit={{ x: '100%', opacity: 0 }}
     transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-     className="bg-transparent  container ml-2 bottom-0 w-full  max-w-4xl relative  backdrop-blur-sm">
+     className="bg-transparent  container ml-2 bottom-0 w-full  max-w-4xl absolute   backdrop-blur-sm">
       {/* <Button variant='icon' className='hover:bg-slate-400  hover:text-black text-cyan-400 cursor-pointer transition ease-in rounded-full'  onClick={handleClose}><X className="h-8 w-8"/></Button> */}
       <h3 className=" text-slate-100 ml-2">Select One of the following Project to continue</h3>
     <div className="relative  rounded-3xl flex flex-wrap justify-start border-slate-500 max-w-4xl gap-2  p-2">
         {/* have to map with latLongDetails for the coordinates test coordinates is just for testing */}
       {latLongDetails.map((location, index) => {
         return (
-          <Card key={index} onClick={()=>handleSelectedCard(location.project_id,location.project_name_eng)} className={`w-50 ${location.project_id===selectedCard?'bg-cyan-700':"bg-slate-600/90"}  border-cyan-400 shadow-lg rounded-2xl max-w-52 hover:text-black  text-wrap content-center cursor-pointer hover:bg-cyan-600 transition-all ease-in`}>
-            <CardContent className='text-wrap whitespace-pre-wrap text-sm p-4'>
+          <Card key={index} onClick={()=>handleSelectedCard(location.project_id,location.project_name_eng)} className={` ${location.project_id===selectedCard?'bg-cyan-700':"bg-slate-600/90"}  border-cyan-400 shadow-lg rounded-2xl max-w-52 hover:text-black  text-wrap content-center cursor-pointer hover:bg-cyan-600 transition-all ease-in`}>
+            <CardContent className='text-wrap whitespace-pre-wrap text-sm p-2'>
               <h3 className="font-bold text-slate-200 text-sm">{location.project_name_eng}</h3>
-              <a
+              {/* <a
                 // href={location["Project URL"]}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="text-cyan-400 hover:underline text-xs "
               >
                 {location["Project URL"]}
-              </a>
+              </a> */}
             </CardContent>
           </Card>
         );
