@@ -44,6 +44,7 @@ export default function App() {
 
   // States for the page
   const [language, setLanguage] = useState(t("English"));
+  const [chatLoading,setLoading] = useState(false)
   const [isFocused, setIsFocused] = useState(false);
   const [isChat, setIsChat] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -104,7 +105,13 @@ export default function App() {
   // Handler funtion for the chat
   const handleSend = async (prompt) => {
     if (!prompt.trim()) return;
+    setInputValue("");
 
+    if(!isConnectionOpen){
+      await handleStart()
+    }
+
+    setLoading(true)
     // toggle the chat to true so that chatContaienr could come in place of heroSection
     if (!isChat) {
       setIsChat(true);
@@ -127,9 +134,10 @@ export default function App() {
     // backend response from the api
     try {
       const data = await chatService(prompt, convHistory, language);
+      setLoading(false)
       handleRepeat(data.Response);
       console.log(data);
-      setInputValue("");
+    
       //  state updateer to update the state to include current response from the api at the last index
       setMessages((prev) => {
         const updatedMessages = [...prev];
@@ -161,15 +169,16 @@ export default function App() {
     } catch (error) {
       console.log(error.message || "something went wrong");
       setInputValue("");
-      setMessages((prev) => {
-        const updatedMessages = [...prev];
-        updatedMessages[updatedMessages.length - 1] = {
-          text: "Something went wrong please try again",
-          isUser: false,
-          isLoading: false,
-        };
-        return updatedMessages;
-      });
+      // setMessages((prev) => {
+      //   const updatedMessages = [...prev];
+      //   updatedMessages[updatedMessages.length - 1] = {
+      //     text: "Something went wrong please try again",
+      //     isUser: false,
+      //     isLoading: false,
+      //   };
+      //   return updatedMessages;
+      // });
+      setLoading(false)
     }
 
     console.log(convHistory);
@@ -196,7 +205,7 @@ export default function App() {
             <div className="h-[75vh] overflow-y-hidden rounded-xl max-w-3xl md:max-w-4xl w-full mx-auto">
               {/* <ChatContainer messages={messages} handleSend={handleSend} /> */}
               {/* <StreamingAvatarWrapper/> */}
-              <div>
+              <div className={`${showRecommendation?"max-w-xl overflow-hidden remove-scrollbar ":""}  container`}>
                 <div>
                   {/* <Button
                     onClick={handleCreateNewSession}
@@ -210,12 +219,12 @@ export default function App() {
                   >
                     Start Session
                   </Button> */}
-                  <Button
+                  {/* <Button
                     onClick={handleCloseConnection}
                     disabled={!isConnectionOpen || isLoading}
                   >
                     Close Connection
-                  </Button>
+                  </Button> */}
                   {/* <Button onClick={speakAvatar} disabled={!isConnectionOpen}>
                     speak
                   </Button> */}
@@ -269,9 +278,9 @@ export default function App() {
             }}
           />
 
-          <div className="relative border-slate-500 border min-h-[120px] bg-gray-900/90 rounded-3xl transition-all ease-in py-1 focus-within:border-2 focus-within:border-cyan-400">
+          <div className="relative max-w-3xl md:max-w-4xl border-slate-500 border min-h-[120px] bg-gray-900/90 rounded-3xl transition-all ease-in py-1 focus-within:border-2 focus-within:border-cyan-400">
             <Textarea
-              value={inputValue}
+              value={chatLoading?"Loading.......":inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               className="w-full textarea h-20 border-none bg-transparent text-white placeholder:text-gray-400 text-lg p-6 rounded-3xl relative z-10 backdrop-blur-sm resize-none"
               placeholder={t("textArea.placeholder")}
@@ -316,6 +325,7 @@ export default function App() {
                   className="h-16 w-16"
                   strokeWidth={2.5}
                   absoluteStrokeWidth
+                  disabled={chatLoading}
                 />
                 <span className="font-semibold">{t("textArea.sendBtn")}</span>
               </Button>

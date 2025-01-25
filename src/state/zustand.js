@@ -4,7 +4,7 @@ import { create } from 'zustand';
 const useAppStore = create((set) => ({
 
 
-  showRecommendation:false,
+  showRecommendation:true,
   setShowRecommendation:(value)=>set({showRecommendation:value}),
 
   showRecommendationCards:false,

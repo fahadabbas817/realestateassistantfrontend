@@ -55,7 +55,7 @@ function StreamingAvatar({ stream }: { stream: MediaStream | null }) {
     return (
         <>
             
-                {stream && (<div className='w-full h-full z-10 flex justify-center items-center'>
+                {stream && (<div className='textarea max-w-full  h-full z-10 flex justify-center items-center'>
                     <video autoPlay ref={videoRef} className="max-w-full max-h-full" />
                     <canvas ref={canvasRef} className="max-w-full max-h-full" />
                 </div>)}
