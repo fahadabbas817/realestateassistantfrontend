@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import useAppStore from "@/state/zustand";
 import { motion } from "framer-motion";
 import StreamingAvatar from "../streamingAvatarComponent/StreamingAvatar";
+import { Mic } from 'lucide-react';
 import {
   Map,
   MapPinned,
@@ -24,9 +25,11 @@ import i18n from "@/i18n";
 import CardsContainer from "@/components/CardsContainer";
 import StreamingAvatarWrapper from "./AvatarPage";
 import useStreamingAvatar from "../streamingAvatarComponent/use-streaming-avatar";
+import { useSpeechRecognition } from "../components/useSpeechRecognition";
 
 export default function App() {
   const { t } = useTranslation();
+ 
   const {
     stream,
     handleCreateNewSession,
@@ -39,9 +42,8 @@ export default function App() {
     setSessionOptions,
   } = useStreamingAvatar();
 
-  const speakAvatar = () => {
-    handleRepeat("مرحبًا! كيف حالك؟ أتمنى لك يومًا سعيدًا ومليئًا بالنجاح")
-  };
+
+
 
   // States for the page
   const [language, setLanguage] = useState(t("language"));
@@ -82,6 +84,7 @@ export default function App() {
       setSessionOptions({ quality: 'high', avatar_name: 'Selina-blackabaya-20220608', voice: { voice_id: t('avatarVoice.voice_id'),language:t("avatarVoice.language") }  })
 
       setLanguage(t("language"));
+      setSpeechLang(t("code"))
     };
     // listenere function to change the lnaguae of the page on every change in the language
     i18n.on("languageChanged", handleLanguageChange);
@@ -104,6 +107,12 @@ export default function App() {
   }, [i18n, t]);
 
   const examples = t("examples", { returnObjects: true });
+
+ 
+
+  
+
+
 
   // Handler funtion for the chat
   const handleSend = async (prompt) => {
@@ -187,6 +196,32 @@ export default function App() {
     console.log(convHistory);
   };
 
+
+
+  
+  const { isListening,
+    transcripts,
+    error,
+    startListening,
+    stopListening,
+    reset,
+    setSpeechLang,} = useSpeechRecognition(handleSend)
+
+    const speakAvatar = async () => {
+      if(isListening)
+      // handleRepeat("مرحبًا! كيف حالك؟ أتمنى لك يومًا سعيدًا ومليئًا بالنجاح")
+       start()
+  
+    };
+    const StopAvatar = async()=>{
+     stop();
+     setInputValue(speechResult)
+    }
+
+
+
+
+
   const handleNewChat = () => {
     handleCloseConnection()
     setIsChat(false);
@@ -211,30 +246,7 @@ export default function App() {
               {/* <ChatContainer messages={messages} handleSend={handleSend} /> */}
               {/* <StreamingAvatarWrapper/> */}
               <div className={`${showRecommendation?"max-w-xl overflow-hidden remove-scrollbar ":""} bottom-6 container`}>
-                <div>
-                  {/* <Button
-                    onClick={handleCreateNewSession}
-                    disabled={isConnectionOpen || isLoading}
-                  >
-                    Create New Session
-                  </Button>
-                  <Button
-                    onClick={handleStart}
-                    disabled={isStarted || isLoading}
-                  >
-                    Start Session
-                  </Button> */}
-                  {/* <Button
-                    onClick={handleCloseConnection}
-                    disabled={!isConnectionOpen || isLoading}
-                  >
-                    Close Connection
-                  </Button> */}
-                  {/* <Button onClick={speakAvatar} disabled={!isConnectionOpen}>
-                    speak
-                  </Button> */}
-                </div>
-                {/* Pass the stream to the StreamingAvatar component */}
+              
                 {stream ? (
                   <StreamingAvatar stream={stream} />
                 ) : (
@@ -316,7 +328,7 @@ export default function App() {
                     className="bg-slate-700 hover:border transition ease-in rounded-full flex items-center"
                   >
                     {" "}
-                    <MapPinned /> <span>Show Map</span>{" "}
+                    <MapPinned /> <span>{t('textArea.mapBtn')}</span>{" "}
                   </Button>
                 </>
               )}
@@ -334,6 +346,8 @@ export default function App() {
                 />
                 <span className="font-semibold">{t("textArea.sendBtn")}</span>
               </Button>
+              {!isListening ?<Button size='icon' variant='secondary' className={` rounded-full`} onClick={startListening}><Mic className='h-8 w-8 font-bold' /></Button> :
+              <Button size='icon' variant='secondary' className="bg-red-500 transition-all ease-in rounded-full" onClick={stopListening}> <Mic className=' text-white animate-pulse' /></Button>}
             </div>
           </div>
         </div>

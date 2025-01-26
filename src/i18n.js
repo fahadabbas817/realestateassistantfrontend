@@ -6,6 +6,7 @@ const resources = {
   en: {
     translation: {
       language:"English",
+      code:'en',
       avatarVoice:{
         voice_id: '76955c80188a4c149df169b5dc9e1a3a',
         language:"English" 
@@ -20,6 +21,7 @@ const resources = {
         placeholder:'Hi, I’m your smart real estate companion, here to find your perfect property and answer all your real estate questions!',
         sendBtn:'Send',
         newChatBtn:'New Chat',
+        mapBtn:"Map"
       },
       examples: [
        
@@ -55,6 +57,7 @@ const resources = {
   ar: {
     translation: {
       language:"العربية",
+      code:'ar',
       avatarVoice:{
         voice_id: "02bec3b4cb514722a84e4e18d596fddf",
         language: "Arabic" 
@@ -69,6 +72,7 @@ const resources = {
         placeholder: "مرحباً، أنا رفيقك الذكي في العقارات، هنا لأساعدك في العثور على العقار المثالي والإجابة على جميع أسئلتك العقارية!",
         sendBtn: "إرسال",
         newChatBtn: "دردشة جديدة",
+        mapBtn:'رسم خريطة'
       },
       examples: [
        
