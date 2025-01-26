@@ -347,7 +347,7 @@ export default function App() {
                 <span className="font-semibold">{t("textArea.sendBtn")}</span>
               </Button>
               {!isListening ?<Button size='icon' variant='secondary' className={` rounded-full`} onClick={startListening}><Mic className='h-8 w-8 font-bold' /></Button> :
-              <Button size='icon' variant='secondary' className="bg-red-500 transition-all ease-in rounded-full" onClick={stopListening}> <Mic className=' text-white animate-pulse' /></Button>}
+              <Button size='icon' variant='secondary' className="bg-red-500 hover:bg-red-500 animate-pulse transition-all ease-in rounded-full" onClick={stopListening}> <Mic className=' text-white' /></Button>}
             </div>
           </div>
         </div>
