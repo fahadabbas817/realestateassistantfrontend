@@ -269,10 +269,10 @@ export default function App() {
             <CardsContainer handleSend={handleSend} />{" "}
           </div>
         )} */}
-        <div className="max-w-3xl md:max-w-4xl w-full mx-auto sticky">
+        <div className="max-w-3xl  md:max-w-4xl w-full mx-auto sticky">
           {/* Glowing Background Effect */}
           <motion.div
-            className="absolute -inset-3 bg-cyan-500/15 rounded-xl blur-2xl"
+            className=" backgroundGradientOVerlay  absolute -inset-3 bg-cyan-500/15 rounded-xl blur-2xl"
             animate={{
               y: isChat ? "70vh" : 0,
               scale: isFocused ? 1.1 : 1,
