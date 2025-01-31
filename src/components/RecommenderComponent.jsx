@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { ArrowLeft, X } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import MapContainer from './MapContainer'
-import useAppStore from '@/state/zustand'
-
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { ArrowLeft, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import MapContainer from "./MapContainer";
+import useAppStore from "@/state/zustand";
+import CardsContainer from "./CardsContainer";
+import ChatMessage from "./ChatMessage";
+import ReactMarkdown from "react-markdown";
 const locations = [
   {
     lat: 24.7136,
@@ -26,49 +28,90 @@ const locations = [
   },
 ];
 
-const dummyLatData=[{'project_id': 15, 'Project URL': 'https://sakani.sa/app/offplan-projects/15', 'project_name_eng': 'Abha - Ali Shar - Abha Hills', 'project_latitude': 18.286109, 'project_longitude': 42.513347}]
+const dummyLatData = [
+  {
+    project_id: 15,
+    "Project URL": "https://sakani.sa/app/offplan-projects/15",
+    project_name_eng: "Abha - Ali Shar - Abha Hills",
+    project_latitude: 18.286109,
+    project_longitude: 42.513347,
+  },
+];
 
-
-const RecommenderComponent = () => {
-const {showRecommendation,setShowRecommendation,latLongDetails} = useAppStore()  
+const RecommenderComponent = ({ handleSend }) => {
+  const {
+    showRecommendation,
+    setShowRecommendation,
+    latLongDetails,
+    showRecommendationCards,
+    showReport,
+    setShowReport,
+    reportResults
+  } = useAppStore();
 
   return (
     <motion.div
-      initial={{ x: '100%', opacity: 0 }}
+      initial={{ x: "100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      exit={{ x: '100%', opacity: 0 }}
-      transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      className='h-screen w-[60vw] p-4  rounded-3xl border-cyan-400 border-2 rounded-r-none bg-slate-600 shadow-xl overflow-hidden flex flex-col'
+      exit={{ x: "100%", opacity: 0 }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
+      className="h-screen w-[60vw] p-4  rounded-3xl border-cyan-400 border-2 rounded-r-none bg-slate-600 shadow-xl  flex flex-col"
     >
-      
-       <span className='flex items-center cursor-pointer w-fit' onClick={()=>{setShowRecommendation(!showRecommendation)}}>
-          <X className=" mb-2  h-8 w-8 hover:translate-x-[-3px] transition-all ease-in hover:text-cyan-400" /> 
-       
-          </span>
-     
-
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="flex-grow overflow-hidden"
+      <span
+        className="flex items-center cursor-pointer w-fit"
+        onClick={() => {
+          setShowRecommendation(!showRecommendation);
+        }}
       >
-        <div className="">
-          <MapContainer locations={dummyLatData} />
+        <X className=" mb-2 text-gray-300  h-8 w-8 hover:translate-x-[-3px] transition-all ease-in hover:text-cyan-400" />
+      </span>
+
+      {showReport ? (
+        <div className="container w-full ml-2  relative backdrop-blur-sm">
+           <ReactMarkdown
+            children={reportResults}
+            // remarkPlugins={[remarkGfm]}
+            components={{
+              h1: ({ children }) => <h1 className="text-2xl font-bold">{children}</h1>,
+              h2: ({ children }) => <h2 className="text-xl font-semibold">{children}</h2>,
+              h3: ({ children }) => <h3 className="text-lg font-medium">{children}</h3>,
+              p: ({ children }) => <p className="mb-2">{children}</p>,
+              strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+              ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
+              ol: ({ children }) => <ol className="list-decimal pl-5">{children}</ol>,
+              li: ({ children }) => <li className="mb-1">{children}</li>,
+            }}
+          />
         </div>
+      ) : (
+        <>
+          {/* Actual conditional logic for rendering */}
+          {/* {latLongDetails?.length>1 && showRecommendationCards && <CardsContainer handleSend={handleSend} />} */}
+          {showRecommendationCards && (
+            <CardsContainer handleSend={handleSend} />
+          )}
 
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="p-4  rounded-t-3xl mt-2"
-        >
-        
-        </motion.div>
-      </motion.div>
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="flex-grow overflow-hidden"
+          >
+            <div className="">
+              <MapContainer locations={dummyLatData} />
+            </div>
+
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="p-4  rounded-t-3xl mt-2"
+            ></motion.div>
+          </motion.div>
+        </>
+      )}
     </motion.div>
-  )
-}
+  );
+};
 
-export default RecommenderComponent
-
+export default RecommenderComponent;

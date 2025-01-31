@@ -30,7 +30,7 @@ export default function ChatContainer({ messages,handleSend }) {
         {messages.map((msg, index) => (
           <ChatMessage key={index} message={msg.text} isUser={msg.isUser} isLoading={msg.isLoading} />
         ))}
-        {latLongDetails?.length>1 && showRecommendationCards && <CardsContainer handleSend={handleSend} />}
+        {/* {latLongDetails?.length>1 && showRecommendationCards && <CardsContainer handleSend={handleSend} />} */}
       </AnimatePresence>
     </motion.div>
   );

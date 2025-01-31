@@ -116,10 +116,13 @@ let testCoordinates = [
  
 
   return (
-    <div className="rounded-3xl border-2 overflow-hidden">
+    <>
+    <h3 className="text-white font-semibold text-xl mb-4">Map View</h3>
+    <div className="rounded-3xl border-2  overflow-hidden">
+     
       <APIProvider apiKey={apiKey} libraries={['marker']}>
         <Map
-          className={"w-full h-[90vh]  shadow-md"}
+          className={"w-full h-[60vh] overflow-hidden shadow-md"}
           styles={customMapStyle}
           defaultCenter={mapCenter}
          
@@ -140,7 +143,7 @@ let testCoordinates = [
               <InfoWindow
              
                 position={{
-                  lat: location.project_latitude + 0.0105,
+                  lat: location.project_latitude + 0.0205,
                   lng: location.project_longitude,
                 }}
               >
@@ -188,6 +191,7 @@ let testCoordinates = [
         </Map>
       </APIProvider>
     </div>
+    </>
   );
 };
 
