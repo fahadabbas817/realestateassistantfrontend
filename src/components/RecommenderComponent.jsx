@@ -92,6 +92,7 @@ const RecommenderComponent = ({ handleSend }) => {
                 ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
                 ol: ({ children }) => <ol className="list-disc pl-5">{children}</ol>,
                 li: ({ children }) => <li className="mb-1">{children}</li>,
+                a: ({ children}) => <a target='_blank' className="text-cyan-600 hover:underline">{children}</a>
               }}
             >
               {reportResults.replace(/•/g, "-")}

@@ -78,7 +78,7 @@ const CardsContainer = () => {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "100%", opacity: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      className="bg-transparent  container w-full ml-2 max-w-[52rem] relative backdrop-blur-sm"
+      className="bg-transparent container ml-2 md:max-w-[45rem]  2xl:max-w-[52rem] relative backdrop-blur-sm"
     >
       
 
@@ -93,14 +93,17 @@ const CardsContainer = () => {
                   location.project_id === selectedCard ? "border-cyan-400" : "border-gray-700"
                 } bg-gray-200 hover:bg-cyan-300  shadow-lg rounded-2xl overflow-hidden cursor-pointer transition-all ease-in hover:shadow-xl w-full`}
               >
-                <CardContent className="p-4">
+                <CardContent className=" p-2  xl:p-4">
                   <h3 className="text-base font-bold text-gray-800">{location.project_name_eng}</h3>
+                  <div className="flex justify-between items-center">
                   <p className="text-gray-600 flex items-center gap-2">
                     <MapPin className="h-4 w-4" /> {location.apatment_area_meter}
                   </p>
+                  <p className="text-sm 2xl:text-base font-semibold text-gray-500">{location.Apartment_code}</p>
+                  </div>
                   <div className="flex justify-between text-gray-700 mt-2">
-                    <span className="text-lg font-semibold">💰 {location.sakani_beneficiary_price}</span>
-                    <span>🛏️ {location.number_of_rooms} / 🚿 {location.bathroom_count}</span>
+                    <span className=" text-sm 2xl:text-lg font-semibold">💰 {location.sakani_beneficiary_price}</span>
+                    <span className="text-sm 2xl:text-base">🛏️ {location.number_of_rooms} / 🚿 {location.bathroom_count}</span>
                   </div>
                 </CardContent>
               </Card>
