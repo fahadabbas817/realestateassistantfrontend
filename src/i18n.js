@@ -11,6 +11,7 @@ const resources = {
         voice_id: '76955c80188a4c149df169b5dc9e1a3a',
         language:"English" 
       },
+      
       hero: {
         titlePart1: "Find Your",
         titlePart2:'Dream Property',
@@ -23,6 +24,11 @@ const resources = {
         newChatBtn:'New Chat',
         mapBtn:"Map"
       },
+
+      report: "Report",
+      hideReport: "Hide Report",
+      reportHeading: "Please select a property to generate a report",
+
       examples: [
        
           {
@@ -62,6 +68,9 @@ const resources = {
         voice_id: "02bec3b4cb514722a84e4e18d596fddf",
         language: "Arabic" 
       },
+      report: "تقرير",
+      hideReport: "إخفاء التقرير",
+      reportHeading: "حدد عقارًا لإنشاء التقرير",
       hero: {
         titlePart1: "ابحث عن",
         titlePart2: "عقار أحلامك",

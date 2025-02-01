@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { reportService } from "../api/chat";
-
+import { useTranslation } from "react-i18next";
 const testCoordinates = [
   {
     project_id: 1,
@@ -52,7 +52,7 @@ const testCoordinates = [
 const CardsContainer = () => {
   const { setShowRecommendationCards, latLongDetails, setReportResults, setShowReport} = useAppStore();
   const [selectedCard, setSelectedCard] = useState(null);
-
+const {t} = useTranslation()
   const handleSelectedCard = async (id, name) => {
     setSelectedCard(id);
     let selectedPrompt = `I am interested in ${name} project. Its ID is ${id}.`;
@@ -72,7 +72,7 @@ const CardsContainer = () => {
 
   return (
     <>
-    <h3 className=" text-xl mb-4 text-white font-semibold">Select a Property</h3>
+    <h3 className=" text-xl mb-4 text-white font-semibold">{t("reportHeading")}</h3>
     <motion.div
       initial={{ x: "100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}

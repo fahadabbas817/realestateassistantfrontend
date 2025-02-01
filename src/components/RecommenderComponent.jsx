@@ -8,6 +8,7 @@ import CardsContainer from "./CardsContainer";
 import ChatMessage from "./ChatMessage";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import {useTranslation} from "react-i18next";
 
 const locations = [
   {
@@ -51,7 +52,7 @@ const RecommenderComponent = ({ handleSend }) => {
     reportResults
   } = useAppStore();
 
-
+const {t} = useTranslation()
  const showReportHandler = () => {
   setShowReport(!showReport);
  }
@@ -74,7 +75,7 @@ const RecommenderComponent = ({ handleSend }) => {
       >
         <X className=" text-gray-300  h-8 w-8 hover:translate-x-[-3px] transition-all ease-in hover:text-cyan-400" />
       </span>
-      <Button variant="outline"   className={` ${showReport?"bg-cyan-600 ":"bg-transparent order-1"}    hover:translate-x-1 transition-all ease-in`} onClick={showReportHandler} > {showReport?"Hide Report":"Report"} </Button>
+      <Button variant="outline"   className={` ${showReport?"bg-cyan-600 ":"bg-transparent order-1"}    hover:translate-x-1 transition-all ease-in`} onClick={showReportHandler} > {showReport?t("hideReport"):t("report")} </Button>
       </div>
 
 
@@ -84,9 +85,9 @@ const RecommenderComponent = ({ handleSend }) => {
               children={reportResults}
               remarkPlugins={[remarkGfm]}
               components={{
-                h1: ({ children }) => <h1 className="text-3xl text-cyan-600 font-bold">{children}</h1>,
-                h2: ({ children }) => <h2 className="text-xl text-cyan-600 font-semibold">{children}</h2>,
-                h3: ({ children }) => <h3 className="text-lg text-cyan-600 font-medium">{children}</h3>,
+                h1: ({ children }) => <h1 className="text-3xl text-cyan-300 font-bold">{children}</h1>,
+                h2: ({ children }) => <h2 className="text-xl text-cyan-300 font-semibold">{children}</h2>,
+                h3: ({ children }) => <h3 className="text-lg text-cyan-300 font-medium">{children}</h3>,
                 p: ({ children }) => <p className="mb-2">{children}</p>,
                 strong: ({ children }) => <strong className="font-bold">{children}</strong>,
                 ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
