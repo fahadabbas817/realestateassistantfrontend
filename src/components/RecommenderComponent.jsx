@@ -7,6 +7,8 @@ import useAppStore from "@/state/zustand";
 import CardsContainer from "./CardsContainer";
 import ChatMessage from "./ChatMessage";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 const locations = [
   {
     lat: 24.7136,
@@ -49,40 +51,52 @@ const RecommenderComponent = ({ handleSend }) => {
     reportResults
   } = useAppStore();
 
+
+ const showReportHandler = () => {
+  setShowReport(!showReport);
+ }
+
+
   return (
     <motion.div
       initial={{ x: "100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "100%", opacity: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      className="h-screen w-[60vw] p-4  rounded-3xl border-cyan-400 border-2 rounded-r-none bg-slate-600 shadow-xl  flex flex-col"
+      className="h-screen w-[60vw] p-4  rounded-3xl border-cyan-400 border-2 overflow-y-scroll rounded-r-none bg-slate-600 shadow-xl  flex flex-col"
     >
+      <div className="controlButtons mb-2  w-96 items-center flex gap-12">
       <span
-        className="flex items-center cursor-pointer w-fit"
+        className="flex items-center   cursor-pointer w-fit"
         onClick={() => {
           setShowRecommendation(!showRecommendation);
         }}
       >
-        <X className=" mb-2 text-gray-300  h-8 w-8 hover:translate-x-[-3px] transition-all ease-in hover:text-cyan-400" />
+        <X className=" text-gray-300  h-8 w-8 hover:translate-x-[-3px] transition-all ease-in hover:text-cyan-400" />
       </span>
+      <Button variant="outline"   className={` ${showReport?"bg-cyan-600 ":"bg-transparent order-1"}    hover:translate-x-1 transition-all ease-in`} onClick={showReportHandler} > {showReport?"Hide Report":"Report"} </Button>
+      </div>
 
-      {showReport ? (
-        <div className="container w-full ml-2  relative backdrop-blur-sm">
-           <ReactMarkdown
-            children={reportResults}
-            // remarkPlugins={[remarkGfm]}
-            components={{
-              h1: ({ children }) => <h1 className="text-2xl font-bold">{children}</h1>,
-              h2: ({ children }) => <h2 className="text-xl font-semibold">{children}</h2>,
-              h3: ({ children }) => <h3 className="text-lg font-medium">{children}</h3>,
-              p: ({ children }) => <p className="mb-2">{children}</p>,
-              strong: ({ children }) => <strong className="font-bold">{children}</strong>,
-              ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
-              ol: ({ children }) => <ol className="list-decimal pl-5">{children}</ol>,
-              li: ({ children }) => <li className="mb-1">{children}</li>,
-            }}
-          />
-        </div>
+
+        {showReport ? (
+          <div className="container w-full ml-2  relative backdrop-blur-sm">
+            <ReactMarkdown
+              children={reportResults}
+              remarkPlugins={[remarkGfm]}
+              components={{
+                h1: ({ children }) => <h1 className="text-3xl text-cyan-600 font-bold">{children}</h1>,
+                h2: ({ children }) => <h2 className="text-xl text-cyan-600 font-semibold">{children}</h2>,
+                h3: ({ children }) => <h3 className="text-lg text-cyan-600 font-medium">{children}</h3>,
+                p: ({ children }) => <p className="mb-2">{children}</p>,
+                strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+                ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
+                ol: ({ children }) => <ol className="list-disc pl-5">{children}</ol>,
+                li: ({ children }) => <li className="mb-1">{children}</li>,
+              }}
+            >
+              {reportResults.replace(/•/g, "-")}
+            </ReactMarkdown>
+          </div>
       ) : (
         <>
           {/* Actual conditional logic for rendering */}
@@ -95,7 +109,7 @@ const RecommenderComponent = ({ handleSend }) => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="flex-grow overflow-hidden"
+            className="flex-grow "
           >
             <div className="">
               <MapContainer locations={dummyLatData} />

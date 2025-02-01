@@ -122,7 +122,7 @@ let testCoordinates = [
      
       <APIProvider apiKey={apiKey} libraries={['marker']}>
         <Map
-          className={"w-full h-[60vh] overflow-hidden shadow-md"}
+          className={"w-full h-[60vh] overflow-y-scroll shadow-md"}
           styles={customMapStyle}
           defaultCenter={mapCenter}
          

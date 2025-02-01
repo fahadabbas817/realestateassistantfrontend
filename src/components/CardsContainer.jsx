@@ -49,7 +49,7 @@ const testCoordinates = [
   },
 ];
 
-const CardsContainer = ({ handleSend }) => {
+const CardsContainer = () => {
   const { setShowRecommendationCards, latLongDetails, setReportResults, setShowReport} = useAppStore();
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -66,7 +66,7 @@ const CardsContainer = ({ handleSend }) => {
     }
    
    
-    setShowRecommendationCards(false);
+    // setShowRecommendationCards(false);
     // handleSend(selectedPrompt);
   };
 
@@ -78,23 +78,23 @@ const CardsContainer = ({ handleSend }) => {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "100%", opacity: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      className="bg-transparent mb-2 container w-full ml-2 max-w-[54rem] relative backdrop-blur-sm"
+      className="bg-transparent  container w-full ml-2 max-w-[52rem] relative backdrop-blur-sm"
     >
       
 
       {/* ShadCN Carousel */}
       <Carousel opts={{ align: "start" }} className="w-full">
-        <CarouselContent className="-ml-1">
+        <CarouselContent className="-ml-1 ">
           {latLongDetails.map((location,index) => (
-            <CarouselItem key={index} className="pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/3">
+            <CarouselItem key={index} className=" sm:basis-1/2 md:basis-1/3 lg:basis-1/3">
               <Card
                 onClick={() => handleSelectedCard(location.Apartment_code, location.project_name_eng)}
                 className={`${
                   location.project_id === selectedCard ? "border-cyan-400" : "border-gray-700"
-                } bg-gray-200 hover:bg-cyan-300 shadow-lg rounded-2xl overflow-hidden cursor-pointer transition-all ease-in hover:shadow-xl w-full`}
+                } bg-gray-200 hover:bg-cyan-300  shadow-lg rounded-2xl overflow-hidden cursor-pointer transition-all ease-in hover:shadow-xl w-full`}
               >
                 <CardContent className="p-4">
-                  <h3 className="text-lg font-bold text-gray-800">{location.project_name_eng}</h3>
+                  <h3 className="text-base font-bold text-gray-800">{location.project_name_eng}</h3>
                   <p className="text-gray-600 flex items-center gap-2">
                     <MapPin className="h-4 w-4" /> {location.apatment_area_meter}
                   </p>

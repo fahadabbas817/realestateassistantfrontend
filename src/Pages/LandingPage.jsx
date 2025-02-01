@@ -130,9 +130,10 @@ export default function App() {
     if (!isChat) {
       setIsChat(true);
     }
-    if (showRecommendationCards) {
-      setShowRecommendationCards(false);
-    }
+    // to remove the recommendation cards when the user sends a new message if they are already showing there
+    // if (showRecommendationCards) {
+    //   setShowRecommendationCards(false);
+    // }
 
     // Add user message
     setMessages((prev) => [
