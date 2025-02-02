@@ -53,6 +53,8 @@ const CardsContainer = ({handleRepeat}) => {
   const { setShowRecommendationCards, latLongDetails, setReportResults, setShowReport} = useAppStore();
   const [selectedCard, setSelectedCard] = useState(null);
 const {t} = useTranslation()
+
+
   const handleSelectedCard = async (id, name) => {
     setSelectedCard(id);
     let selectedPrompt = `I am interested in ${name} project. Its ID is ${id}.`;
@@ -60,7 +62,8 @@ const {t} = useTranslation()
       const report = await reportService(id)
       setShowReport(true)
       setReportResults(report)
-      handleRepeat(report)
+      handleRepeat(report.Summary)
+      handleRepeat(report.Recommendations)
       console.log(report)
     } catch (error) {
       console.log(error.message)
