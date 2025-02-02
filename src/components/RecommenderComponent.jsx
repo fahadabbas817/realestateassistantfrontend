@@ -9,6 +9,7 @@ import ChatMessage from "./ChatMessage";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {useTranslation} from "react-i18next";
+import ReportContainer from "./ReportContainer";
 
 const locations = [
   {
@@ -81,7 +82,7 @@ const {t} = useTranslation()
 
         {showReport ? (
           <div className="container w-full ml-2  relative backdrop-blur-sm">
-            <ReactMarkdown
+            {/* <ReactMarkdown
               children={reportResults}
               remarkPlugins={[remarkGfm]}
               components={{
@@ -97,7 +98,8 @@ const {t} = useTranslation()
               }}
             >
               {reportResults.replace(/•/g, "-")}
-            </ReactMarkdown>
+            </ReactMarkdown> */}
+            <ReportContainer data={reportResults} /> 
           </div>
       ) : (
         <>
