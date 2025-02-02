@@ -83,7 +83,7 @@ const {t} = useTranslation()
     >
       
 
-      {/* ShadCN Carousel */}
+      {/* ShadCN Carousel element */}
       <Carousel opts={{ align: "start" }} className="w-full">
         <CarouselContent className="-ml-1 ">
           {latLongDetails.map((location,index) => (
@@ -94,8 +94,8 @@ const {t} = useTranslation()
                   location.project_id === selectedCard ? "border-cyan-400" : "border-gray-700"
                 } bg-gray-200 hover:bg-cyan-300  shadow-lg rounded-2xl overflow-hidden cursor-pointer transition-all ease-in hover:shadow-xl w-full`}
               >
-                <CardContent className=" p-2  xl:p-4">
-                  <h3 className="text-base font-bold text-gray-800">{location.project_name_eng}</h3>
+                <CardContent className="  p-2  xl:p-4">
+                  <h3 className="  text-base font-bold text-gray-800">{location.project_name_eng}</h3>
                   <div className="flex justify-between items-center">
                   <p className="text-gray-600 flex items-center gap-2">
                     <MapPin className="h-4 w-4" /> {location.apatment_area_meter}
