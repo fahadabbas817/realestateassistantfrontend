@@ -94,7 +94,7 @@ export default function App() {
      handleStart()
     }
   
-    // startConversation()
+    startConversation()
 
     // To clean up on umount
     return () => {
@@ -121,9 +121,9 @@ export default function App() {
     if (!prompt.trim()) return;
     setInputValue("");
 
-    // if(!isConnectionOpen){
-    //   await handleStart()
-    // }
+    if(!isConnectionOpen){
+      await handleStart()
+    }
 
     setLoading(true)
     // toggle the chat to true so that chatContaienr could come in place of heroSection
@@ -150,7 +150,7 @@ export default function App() {
     try {
       const data = await chatService(prompt, convHistory, language);
       setLoading(false)
-      // handleRepeat(data.Response);
+      handleRepeat(data.Response);
       console.log(data);
     
       //  state updateer to update the state to include current response from the api at the last index
@@ -208,7 +208,7 @@ export default function App() {
     startListening,
     stopListening,
     reset,
-    setSpeechLang,} = useSpeechRecognition(showAudioTranscript);
+    setSpeechLang,} = useSpeechRecognition(handleSend);
 
     const speakAvatar = async () => {
       if(isListening)
@@ -246,16 +246,16 @@ export default function App() {
         <div className={`chat-wrapper ${isChat ? "flex flex-col " : ""}`}>
           {isChat ? (
             <div className="h-[75vh] overflow-y-hidden rounded-xl max-w-3xl md:max-w-4xl w-full mx-auto">
-              <ChatContainer messages={messages} handleSend={handleSend} />
+              {/* <ChatContainer messages={messages} handleSend={handleSend} /> */}
               {/* <StreamingAvatarWrapper/> */}
-              {/* <div className={`${showRecommendation?"max-w-xl overflow-hidden remove-scrollbar ":""} bottom-6 container`}>
+              <div className={`${showRecommendation?"max-w-xl overflow-hidden remove-scrollbar ":""} bottom-6 container`}>
               
                 {stream ? (
                   <StreamingAvatar stream={stream} />
                 ) : (
                   <p>No stream available. Please start a session.</p>
                 )}
-              </div> */}
+              </div>
             </div>
           ) : (
             <>
