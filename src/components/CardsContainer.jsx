@@ -49,7 +49,7 @@ const testCoordinates = [
   },
 ];
 
-const CardsContainer = () => {
+const CardsContainer = ({handleRepeat}) => {
   const { setShowRecommendationCards, latLongDetails, setReportResults, setShowReport} = useAppStore();
   const [selectedCard, setSelectedCard] = useState(null);
 const {t} = useTranslation()
@@ -60,6 +60,7 @@ const {t} = useTranslation()
       const report = await reportService(id)
       setShowReport(true)
       setReportResults(report)
+      handleRepeat(report)
       console.log(report)
     } catch (error) {
       console.log(error.message)

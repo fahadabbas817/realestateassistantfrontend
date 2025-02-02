@@ -41,7 +41,7 @@ const dummyLatData = [
   },
 ];
 
-const RecommenderComponent = ({ handleSend }) => {
+const RecommenderComponent = ({ handleRepeat }) => {
   const {
     showRecommendation,
     setShowRecommendation,
@@ -104,7 +104,7 @@ const {t} = useTranslation()
           {/* Actual conditional logic for rendering */}
           {/* {latLongDetails?.length>1 && showRecommendationCards && <CardsContainer handleSend={handleSend} />} */}
           {showRecommendationCards && (
-            <CardsContainer handleSend={handleSend} />
+            <CardsContainer handleRepeat={handleRepeat}  />
           )}
 
           <motion.div

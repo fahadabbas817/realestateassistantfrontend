@@ -373,7 +373,7 @@ export default function App() {
         )}
       </div>
 
-      <div>{showRecommendation && <RecommenderComponent  handleSend={handleSend}/>}</div>
+      <div>{showRecommendation && <RecommenderComponent handleRepeat={handleRepeat}/>}</div>
     </div>
   );
 }
