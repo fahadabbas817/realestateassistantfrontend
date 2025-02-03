@@ -120,7 +120,7 @@ const restartSession = async () => {
     // To clean up on umount htat is 
     return () => {
       i18n.off("languageChanged", handleLanguageChange);
-
+      handleCloseConnection()
     };
 
 
