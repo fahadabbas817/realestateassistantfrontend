@@ -55,15 +55,31 @@ const CardsContainer = ({handleRepeat}) => {
 const {t} = useTranslation()
 
 
+
+function cleanMarkdown(text) {
+  if (typeof text !== "string") return ""; 
+
+  return text
+      .replace(/^#\s*/gm, "") 
+      .replace(/\*\s*/g, "") 
+      .replace(/\[.*?\]\((.*?)\)/g, "$1") 
+      .replace(/https?:\/\/[^\s]+/g, "") 
+      .trim();
+}
+
+
   const handleSelectedCard = async (id, name) => {
     setSelectedCard(id);
     let selectedPrompt = `I am interested in ${name} project. Its ID is ${id}.`;
     try {
       const report = await reportService(id)
       setShowReport(true)
+      
       setReportResults(report)
-      handleRepeat(report.Summary)
-      handleRepeat(report.Recommendations)
+      let cleanSummary = await cleanMarkdown(report.Summary)
+      await handleRepeat(cleanSummary)
+      let cleanRecommendations = await cleanMarkdown(report.Recommendations)
+      handleRepeat(cleanRecommendations)
       console.log(report)
     } catch (error) {
       console.log(error.message)
@@ -94,7 +110,7 @@ const {t} = useTranslation()
               <Card
                 onClick={() => handleSelectedCard(location.Apartment_code, location.project_name_eng)}
                 className={`${
-                  location.project_id === selectedCard ? "border-cyan-400" : "border-gray-700"
+                  location.project_id === selectedCard ? "border-cyan-400 bg-cyan-400" : "border-gray-700"
                 } bg-gray-200 hover:bg-cyan-300  shadow-lg rounded-2xl overflow-hidden cursor-pointer transition-all ease-in hover:shadow-xl w-full`}
               >
                 <CardContent className="  p-2  xl:p-4">
