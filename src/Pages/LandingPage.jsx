@@ -69,6 +69,25 @@ export default function App() {
     setShowRecommendationCards,
   } = useAppStore();
 
+
+  const startConversation = async () => {
+    if (!isConnectionOpen) { 
+        await handleCreateNewSession();  
+        await handleStart();            
+    }
+};
+
+const restartSession = async () => {
+  
+      await handleCloseConnection();  // Close existing session first
+
+  await handleCreateNewSession();
+  await handleStart();
+};
+
+
+
+
   // Use effect for changing the text language whenever there is change in the language
   useEffect(() => {
     const handleLanguageChange = () => {
@@ -89,10 +108,12 @@ export default function App() {
     // listenere function to change the lnaguae of the page on every change in the language
     i18n.on("languageChanged", handleLanguageChange);
 
-    const startConversation = async ()=>{
-     await handleCreateNewSession()
-     handleStart()
-    }
+    // const startConversation = async ()=>{
+    //  await handleCreateNewSession()
+    //  await handleStart()
+    // }
+
+  
   
     startConversation()
 
@@ -121,9 +142,16 @@ export default function App() {
     if (!prompt.trim()) return;
     setInputValue("");
 
-    if(!isConnectionOpen){
-      await handleStart()
-    }
+    // if(!isConnectionOpen){
+    //   await handleCreateNewSession()
+    //   await handleStart()
+    // }
+
+    if (!isConnectionOpen) {
+      console.warn("Session lost! Restarting...");
+      await restartSession();
+  }
+
 
     setLoading(true)
     // toggle the chat to true so that chatContaienr could come in place of heroSection

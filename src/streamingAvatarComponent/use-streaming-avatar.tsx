@@ -82,7 +82,7 @@ export default function useStreamingAvatar(): UseStreamingAvatar {
 
     const handleStart = useCallback(async () => {
         console.log('handlestart started loading')
-        // if (isConnectionOpen || isStarted || session) return;
+        if (isConnectionOpen || isStarted || session) return;
         console.log('ethy nhi ho payega')
         setIsLoadingNewSession(true);
         createNewSession(

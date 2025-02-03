@@ -78,7 +78,7 @@ function cleanMarkdown(text) {
       setReportResults(report)
       let cleanSummary = await cleanMarkdown(report.Summary)
       await handleRepeat(cleanSummary)
-      let cleanRecommendations = await cleanMarkdown(report.Recommendations)
+      let cleanRecommendations = await cleanMarkdown(report.Recommendations_response)
       handleRepeat(cleanRecommendations)
       console.log(report)
     } catch (error) {
