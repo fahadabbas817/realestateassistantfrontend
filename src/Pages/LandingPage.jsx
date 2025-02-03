@@ -96,7 +96,7 @@ export default function App() {
   
     startConversation()
 
-    // To clean up on umount
+    // To clean up on umount htat is 
     return () => {
       i18n.off("languageChanged", handleLanguageChange);
 
@@ -150,7 +150,7 @@ export default function App() {
     try {
       const data = await chatService(prompt, convHistory, language);
       setLoading(false)
-      handleRepeat(data.Response);
+      await handleRepeat(data.Response);
       console.log(data);
     
       //  state updateer to update the state to include current response from the api at the last index
