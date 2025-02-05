@@ -91,6 +91,7 @@ export interface RepeatApiRequest {
 
 export interface RepeatApiResponse {
     duration_ms: number;
+    code: number;
 }
 
 export interface RepeatApiCallbacks {
