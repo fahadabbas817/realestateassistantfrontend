@@ -144,7 +144,7 @@ function cleanMarkdown(text) {
       }
       </Carousel>
     </motion.div>
-    {loading && <div className="flex gap-2"> <span className="">Generating Report</span><Loader className="animate-spin text-cyan-400 h-6 w-6"/></div>   }
+    {loading && <div className="flex gap-2 mx-auto justify-center"> <span className="">Generating Report</span><Loader className="animate-spin text-cyan-400 h-6 w-6"/></div>   }
     </>
   );
 };
