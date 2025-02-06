@@ -1,6 +1,6 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import {useTranslation} from "next-translate/useTranslation";
+import { useTranslation } from "react-i18next";
 const ReportContainer = ({ data }) => {
 
   const {t} = useTranslation()
