@@ -82,7 +82,7 @@ export default function useStreamingAvatar(): UseStreamingAvatar {
 
     const handleStart = useCallback(async () => {
         console.log('handlestart started loading')
-        if (isConnectionOpen || isStarted || session) return;
+        // if (isConnectionOpen || isStarted || session) return;
         console.log('ethy nhi ho payega')
         setIsLoadingNewSession(true);
         createNewSession(
@@ -126,6 +126,7 @@ export default function useStreamingAvatar(): UseStreamingAvatar {
             return;
         }
         try {
+            console.log(session)
             await repeat(
                 { session_id: session.data.session_id, text, task_mode: 'sync', task_type: 'repeat'},
                 {
@@ -142,8 +143,19 @@ export default function useStreamingAvatar(): UseStreamingAvatar {
                         }, total)
                     }
                 });
-        } catch (e) {
+        } catch (e:any) {
             console.log('handleRepeat Error', e)
+            // Check if the error is a 400 Bad Request
+        if (e.response?.status === 400) {
+            console.error('Bad Request detected. Reloading page...');
+            
+            // Optionally show an error message to the user
+            alert('An error occurred (400 Bad Request). The page will reload.');
+
+            // Reload the page
+            window.location.reload();
+        }
+            
         } finally {
 
         }

@@ -110,7 +110,7 @@ function cleanMarkdown(text) {
               <Card
                 onClick={() => handleSelectedCard(location.Apartment_code, location.project_name_eng)}
                 className={`${
-                  location.project_id === selectedCard ? "border-cyan-400 bg-cyan-400" : "border-gray-700"
+                  location.Apartment_code=== selectedCard ? "border-cyan-400 bg-cyan-400" : "border-gray-700"
                 } bg-gray-200 hover:bg-cyan-300  shadow-lg rounded-2xl overflow-hidden cursor-pointer transition-all ease-in hover:shadow-xl w-full`}
               >
                 <CardContent className="  p-2  xl:p-4">
@@ -122,7 +122,8 @@ function cleanMarkdown(text) {
                   <p className="text-sm 2xl:text-base font-semibold text-gray-500">{location.Apartment_code}</p>
                   </div>
                   <div className="flex justify-between text-gray-700 mt-2">
-                    <span className=" text-sm 2xl:text-lg font-semibold">{location.sakani_beneficiary_price}{" "}SAR </span>
+                    <span className=" text-sm 2xl:text-lg font-semibold">{location.sakani_beneficiary_price} <span className='text-xs'>SAR</span>
+                    </span>
                     <span className="text-sm 2xl:text-base">🛏️ {location.number_of_rooms} / 🚿 {location.bathroom_count}</span>
                   </div>
                 </CardContent>

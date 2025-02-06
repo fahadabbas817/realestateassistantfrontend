@@ -24,7 +24,8 @@ const resources = {
         newChatBtn:'New Chat',
         mapBtn:"Map"
       },
-
+      establishConnection:"Establish Connection",
+      startConversation:"Start Conversation",
       report: "Report",
       hideReport: "Hide Report",
       reportHeading: "Please select a property to generate a report",

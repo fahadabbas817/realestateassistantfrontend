@@ -168,6 +168,15 @@ export async function repeat(
     } catch (e) {
         console.log('repeat Error', e)
         callbacks.onError?.(e);
+        if (e.response?.status === 400) {
+            console.error('Bad Request detected. Reloading page...');
+            
+            // Optionally show an error message to the user
+            alert('An error occurred (400 Bad Request). The page will reload.');
+
+            // Reload the page
+            window.location.reload();
+        }
     } finally {
         callbacks.onFinally?.();
     }
