@@ -18,10 +18,10 @@ export const chatService = async (user_query,chat_history,chat_language) => {
     return response.data;
   };
 
-  export const reportService = async (apartment_id) => {      
+  export const reportService = async (apartment_id,language) => {      
     const response = await apiClient.post(
       '/users/get_details',
-      {apartment_id }
+      {apartment_id,language }
     );
     return response.data;
   }

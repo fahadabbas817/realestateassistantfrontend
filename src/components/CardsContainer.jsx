@@ -73,9 +73,9 @@ function cleanMarkdown(text) {
   const handleSelectedCard = async (id, name) => {
     setLoading(true)
     setSelectedCard(id);
-    let selectedPrompt = `I am interested in ${name} project. Its ID is ${id}.`;
+    let language = t("reportLanguage");
     try {
-      const report = await reportService(id)
+      const report = await reportService(id,language);
       setShowReport(true)
       setReportResults(report)
       setLoading(false)
