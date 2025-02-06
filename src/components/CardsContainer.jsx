@@ -6,6 +6,7 @@ import { MapPin } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { reportService } from "../api/chat";
 import { useTranslation } from "react-i18next";
+import { Loader } from 'lucide-react';
 const testCoordinates = [
   {
     project_id: 1,
@@ -52,6 +53,7 @@ const testCoordinates = [
 const CardsContainer = ({handleRepeat}) => {
   const { setShowRecommendationCards, latLongDetails, setReportResults, setShowReport} = useAppStore();
   const [selectedCard, setSelectedCard] = useState(null);
+  const [loading,setLoading] = useState(false)
 const {t} = useTranslation()
 
 
@@ -69,13 +71,14 @@ function cleanMarkdown(text) {
 
 
   const handleSelectedCard = async (id, name) => {
+    setLoading(true)
     setSelectedCard(id);
     let selectedPrompt = `I am interested in ${name} project. Its ID is ${id}.`;
     try {
       const report = await reportService(id)
       setShowReport(true)
-      
       setReportResults(report)
+      setLoading(false)
       let cleanSummary = await cleanMarkdown(report.Summary)
       await handleRepeat(cleanSummary)
       let cleanRecommendations = await cleanMarkdown(report.Recommendations_response)
@@ -83,6 +86,7 @@ function cleanMarkdown(text) {
       console.log(report)
     } catch (error) {
       console.log(error.message)
+      setLoading(false)
     }
    
    
@@ -140,6 +144,7 @@ function cleanMarkdown(text) {
       }
       </Carousel>
     </motion.div>
+    {loading && <div className="flex gap-2"> <span className="">Generating Report</span><Loader className="animate-spin text-cyan-400 h-6 w-6"/></div>   }
     </>
   );
 };

@@ -24,7 +24,7 @@ const resources = {
         newChatBtn:'New Chat',
         mapBtn:"Map"
       },
-      establishConnection:"Establish Connection",
+      establishConnection:"Connect to AI Avatar",
       startConversation:"Start Conversation",
       report: "Report",
       hideReport: "Hide Report",
@@ -72,6 +72,8 @@ const resources = {
       report: "تقرير",
       hideReport: "إخفاء التقرير",
       reportHeading: "حدد عقارًا لإنشاء التقرير",
+      establishConnection:"اتصل بالذكاء الاصطناعي المجسم",
+      startConversation:"ابدأ المحادثة",
       hero: {
         titlePart1: "ابحث عن",
         titlePart2: "عقار أحلامك",
