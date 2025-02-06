@@ -10,6 +10,7 @@ import {
   useAdvancedMarkerRef
 } from "@vis.gl/react-google-maps";
 import useAppStore from "@/state/zustand";
+import { useTranslation } from "react-i18next";
 
 let apiKey = import.meta.env.VITE_GOOGLEMAPS_API_KEY;
 
@@ -44,6 +45,9 @@ const MapContainer = () => {
   const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
   const [mapZoom, setMapZoom] = useState(14);
   const [markerRef, marker] = useAdvancedMarkerRef();
+
+  const {t} = useTranslation()
+
 
 let defaultCenter = { };
 let testCoordinates = [
@@ -117,7 +121,7 @@ let testCoordinates = [
 
   return (
     <>
-    <h3 className="text-white font-semibold text-xl mb-4">Map View</h3>
+    <h3 className="text-white font-semibold text-xl mb-4">{t("mapView")}</h3>
     <div className="rounded-3xl border-2  overflow-hidden">
      
       <APIProvider apiKey={apiKey} libraries={['marker']}>

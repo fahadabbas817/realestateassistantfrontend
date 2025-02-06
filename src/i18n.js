@@ -29,7 +29,7 @@ const resources = {
       report: "Report",
       hideReport: "Hide Report",
       reportHeading: "Please select a property to generate a report",
-
+      mapView:"Map View",
       examples: [
        
           {
@@ -75,6 +75,7 @@ const resources = {
       reportHeading: "حدد عقارًا لإنشاء التقرير",
       establishConnection:"اتصل بالذكاء الاصطناعي المجسم",
       startConversation:"ابدأ المحادثة",
+      mapView:"عرض الخريطة",
       hero: {
         titlePart1: "ابحث عن",
         titlePart2: "عقار أحلامك",
