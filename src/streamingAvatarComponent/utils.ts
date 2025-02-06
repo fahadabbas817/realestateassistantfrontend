@@ -153,7 +153,7 @@ export async function repeat(
             body: JSON.stringify(requestData)
         }).then(res => res.json());
         console.log('repeat response', response)
-        if(response.code===400006){
+        if(response.code===400006 || response.code===10005){
             console.error('Bad Request detected. Reloading page...');
             
             // Optionally show an error message to the user
