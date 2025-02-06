@@ -441,22 +441,7 @@ export default function App() {
             </div>
           </div>
           {/* Example Buttons */}
-          {!isChat && (
-            <div className="flex flex-wrap gap-2 justify-center max-w-3xl   mt-6  mx-auto ">
-              <div className="suggestions flex flex-wrap gap-2 justify-center ">
-                {examples.map((query, index) => (
-                  <Button
-                    key={index}
-                    onClick={() => setInputValue(query.prompt)}
-                    className=" rounded-full bg-transparent text-slate-300 hover:bg-gray-900/50 transition-colors text-sm backdrop-blur-sm border border-slate-300"
-                  >
-                    <span>{query.exampleText}</span>
-                    {/* <ArrowUpRight className="text-cyan-400"/> */}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          )}
+    
         </div>
       )}
 
