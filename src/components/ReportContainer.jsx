@@ -1,12 +1,16 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import {useTranslation} from "react-i18next";
+import i18n from "../i18n";
+
+
 const ReportContainer = ({ data }) => {
 
   const {t} = useTranslation()
-  const language = t("translation.code") 
+  const isRTL = i18n.language === "ar" 
+
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-transparent  space-y-6" dir={language === "ar" ? "rtl" : "ltr"} style={{ textAlign: isRTL ? "right" : "left" }} >
+    <div className="max-w-3xl mx-auto p-6 bg-transparent  space-y-6" dir={isRTL ? "rtl" : "ltr"} style={{ textAlign: isRTL ? "right" : "left" }} >
       <section className={""}>
         <ReactMarkdown
           components={{
